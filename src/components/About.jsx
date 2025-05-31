@@ -108,21 +108,30 @@ const About = () => {
           </motion.div>
 
           <motion.div 
-            className="relative"
+            className="relative flex justify-center"
             initial={{ opacity: 0, x: 50 }}
             animate={aboutVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <motion.div 
-              className="relative z-10"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+              className="relative z-10 w-80 h-80 mx-auto"
             >
-              <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=600&fit=crop&crop=face" 
-                alt="Profile"
-                className="w-full max-w-md mx-auto rounded-2xl shadow-xl"
-              />
+              <div className="w-full h-full rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 p-8 shadow-xl">
+                <div className="text-center h-full flex flex-col justify-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={aboutVisible ? { scale: 1 } : { scale: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                    className="text-6xl mb-4"
+                  >
+                    🚀
+                  </motion.div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">Innovation</h3>
+                  <p className="text-gray-600">
+                    Passionate about creating cutting-edge AI solutions and pushing the boundaries of technology.
+                  </p>
+                </div>
+              </div>
             </motion.div>
             <motion.div 
               className="absolute top-4 right-4 w-72 h-72 bg-blue-200 rounded-2xl -z-10"
