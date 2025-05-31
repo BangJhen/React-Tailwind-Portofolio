@@ -62,12 +62,12 @@ const Hero = () => {
             variants={itemVariants}
             className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 relative"
           >
-            <div className="gooey-marquee">
-              <span className="gradient-text gooey-text">
+            <div className="gooey-marquee hero-name">
+              <span className="gradient-text">
                 {nameText}
               </span>
               <motion.span 
-                className="text-purple-600 text-4xl md:text-6xl font-bold ml-2"
+                className="text-purple-600 text-4xl md:text-6xl font-bold ml-2 blinking-cursor"
                 animate={{ 
                   opacity: [1, 1, 0, 0]
                 }}

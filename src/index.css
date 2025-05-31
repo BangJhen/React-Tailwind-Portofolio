@@ -37,14 +37,20 @@ body {
   background: #64748b;
 }
 
-/* Gradient Text Effect */
+/* Gradient Text Effect - Fixed for proper rendering */
 .gradient-text {
-  background: linear-gradient(#966ac1 50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% 200%;
   animation: gradient-shift 3s ease infinite;
+  display: inline-block;
+  /* Fallback for browsers that don't support background-clip */
+  color: #667eea;
+  font-weight: inherit;
+  position: relative;
+  z-index: 10;
 }
 
 @keyframes gradient-shift {
@@ -196,28 +202,30 @@ body {
   100% { opacity: 0; }
 }
 
-/* Gooey Marquee Effect */
+/* Gooey Marquee Effect - Simplified */
 .gooey-marquee {
   position: relative;
   overflow: visible;
   display: inline-block;
+  isolation: isolate;
 }
 
 .gooey-marquee::before,
 .gooey-marquee::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: -20px;
+  left: -20px;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
   background: linear-gradient(135deg, 
-    rgba(102, 126, 234, 0.15) 0%, 
-    rgba(118, 75, 162, 0.25) 50%, 
-    rgba(102, 126, 234, 0.15) 100%);
-  border-radius: 20px;
+    rgba(102, 126, 234, 0.1) 0%, 
+    rgba(118, 75, 162, 0.2) 50%, 
+    rgba(102, 126, 234, 0.1) 100%);
+  border-radius: 30px;
   z-index: -1;
-  filter: blur(8px);
+  filter: blur(15px);
+  pointer-events: none;
 }
 
 .gooey-marquee::before {
@@ -276,9 +284,155 @@ body {
   }
 }
 
+/* Interactive Hover Effects for Hero Name */
+.hero-name {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-name:hover {
+  transform: scale(1.02);
+}
+
+.hero-name:hover .gooey-marquee::before {
+  animation: gooeyMorphHover1 3s ease-in-out infinite;
+  filter: blur(15px);
+  opacity: 0.4;
+}
+
+.hero-name:hover .gooey-marquee::after {
+  animation: gooeyMorphHover2 3s ease-in-out infinite 1.5s;
+  filter: blur(12px);
+  opacity: 0.3;
+}
+
+.hero-name:hover .gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 60%, #667eea 100%);
+  background-size: 300% 300%;
+  animation: gradientHover 3s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-name::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.8s ease, height 0.8s ease, opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+}
+
+.hero-name:hover::after {
+  width: 150%;
+  height: 150%;
+  opacity: 1;
+}
+
+@keyframes gooeyMorphHover1 {
+  0%, 100% {
+    transform: translateX(-15px) scale(1.2, 1.1) skew(-3deg);
+    border-radius: 30px 15px 30px 15px;
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(15px) scale(0.8, 1.4) skew(3deg);
+    border-radius: 15px 50px 15px 50px;
+    opacity: 0.9;
+  }
+}
+
+@keyframes gooeyMorphHover2 {
+  0%, 100% {
+    transform: translateX(15px) scale(0.9, 1.3) skew(2deg);
+    border-radius: 40px 20px 40px 20px;
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(-15px) scale(1.4, 0.7) skew(-4deg);
+    border-radius: 20px 60px 20px 60px;
+    opacity: 0.8;
+  }
+}
+
+@keyframes gradientHover {
+  0% { 
+    background-position: 0% 50%; 
+    transform: scale(1);
+  }
+  25% { 
+    background-position: 50% 25%; 
+    transform: scale(1.02);
+  }
+  50% { 
+    background-position: 100% 50%; 
+    transform: scale(1);
+  }
+  75% { 
+    background-position: 50% 75%; 
+    transform: scale(1.01);
+  }
+  100% { 
+    background-position: 0% 50%; 
+    transform: scale(1);
+  }
+}
+
+/* Enhanced cursor interaction */
+.hero-name:hover .blinking-cursor {
+  animation: cursorExcited 0.6s ease infinite;
+}
+
+@keyframes cursorExcited {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1) rotate(0deg);
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.1) rotate(1deg);
+  }
+}
+
 /* Clean text styling */
 .gooey-text {
   position: relative;
   display: inline-block;
-  z-index: 2;
+  z-index: 10;
+}
+
+/* Ensure text stays above ripple */
+.hero-name .gradient-text,
+.hero-name .blinking-cursor {
+  position: relative;
+  z-index: 10;
+}
+
+/* Browser compatibility for gradient text */
+@supports not (background-clip: text) {
+  .gradient-text {
+    background: none;
+    color: #667eea;
+    -webkit-text-fill-color: unset;
+  }
+}
+
+/* Firefox specific fixes */
+@-moz-document url-prefix() {
+  .gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
 }
