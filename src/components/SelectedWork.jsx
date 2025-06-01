@@ -11,39 +11,12 @@ const SelectedWork = () => {
   const projects = [
     {
       id: 1,
-      title: "ZENPOINT",
-      year: "2024",
-      category: ["UI DESIGN", "WEB DEV"],
-      image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&h=400&fit=crop",
-      description: "Discover Our Inspiring Mission",
-      color: "from-blue-400 to-cyan-400"
-    },
-    {
-      id: 2,
-      title: "PAYU",
-      year: "2024",
-      category: ["UI DESIGN", "WEB DEV"],
-      image: "https://images.unsplash.com/photo-1559526324-593bc073d938?w=600&h=400&fit=crop",
-      description: "Available now on the platform",
-      color: "from-amber-400 to-orange-400"
-    },
-    {
-      id: 3,
-      title: "COMPAI",
-      year: "2024",
-      category: ["UI DESIGN", "MOBILE DEV", "WEB DEV"],
-      image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop",
-      description: "Your pocket companion",
-      color: "from-gray-600 to-gray-800"
-    },
-    {
-      id: 4,
-      title: "CHATPIC.AI",
-      year: "2024",
-      category: ["UI DESIGN", "MOBILE DEV"],
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
-      description: "AI-powered communication platform",
-      color: "from-purple-400 to-pink-400"
+      title: "Sentiment Analysis With Qwen2.5 Evaluation",
+      year: "2025",
+      category: ["NLP", "LLM", "Python"],
+      image: "/sentiment_analysis_project_img.png",
+      description: "AI-powered sentiment analysis tool",
+      href:"https://sentiment-analysis-with-qwen.streamlit.app"
     }
   ]
 
@@ -54,6 +27,10 @@ const SelectedWork = () => {
   const filteredProjects = activeFilter === 'All' 
     ? projects 
     : projects.filter(project => project.category.includes(activeFilter))
+
+  const handleProjectClick = (href) => {
+    window.open(href, '_blank', 'noopener,noreferrer')
+  }
 
   return (
     <section id="work" className="py-20 bg-white">
@@ -122,7 +99,7 @@ const SelectedWork = () => {
             <motion.div 
               key={project.id}
               data-index={index}
-              className="group cursor-pointer card-hover"
+              className="group cursor-pointer"
               initial={{ opacity: 0, y: 60 }}
               animate={visibleProjects.has(index) ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
               transition={{ 
@@ -130,33 +107,33 @@ const SelectedWork = () => {
                 ease: "easeOut",
                 delay: index * 0.1 
               }}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ y: -5 }}
+              onClick={() => handleProjectClick(project.href)}
             >
-              <div className="bg-gray-100 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg">
                 <motion.div 
-                  className={`h-64 bg-gradient-to-br ${project.color} relative overflow-hidden`}
-                  whileHover={{ scale: 1.05 }}
+                  className="relative overflow-hidden"
+                  whileHover={{ scale: 1.01 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-full object-cover mix-blend-overlay opacity-80 group-hover:opacity-60 transition-opacity"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white">
-                      <motion.h3 
-                        className="text-xl font-semibold mb-2"
-                        whileHover={{ y: -4 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        {project.description}
-                      </motion.h3>
+                  <div className="aspect-[16/10] relative">
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    />
+                    {/* Subtle hover overlay */}
+                    <div className="absolute inset-0 bg-gray-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <motion.div 
-                        className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-lg mx-auto"
-                        whileHover={{ rotate: 12, scale: 1.1 }}
-                        transition={{ duration: 0.3 }}
-                      />
+                        className="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        whileHover={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <svg className="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </motion.div>
                     </div>
                   </div>
                 </motion.div>
@@ -168,27 +145,48 @@ const SelectedWork = () => {
                   transition={{ duration: 0.6, delay: index * 0.1 + 0.3 }}
                 >
                   <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold text-gray-900">{project.title}</h3>
-                    <span className="text-gray-500 text-sm">{project.year}</span>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-gray-700 transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm">
+                        {project.description}
+                      </p>
+                    </div>
+                    <span className="text-gray-400 text-xs font-medium ml-4 flex-shrink-0 bg-gray-100 px-2 py-1 rounded">
+                      {project.year}
+                    </span>
                   </div>
                   
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mt-4">
                     {project.category.map((cat, catIndex) => (
                       <motion.span 
                         key={cat}
-                        className={`px-3 py-1 text-xs font-medium rounded-full ${
-                          cat === 'UI DESIGN' ? 'bg-cyan-100 text-cyan-700' :
-                          cat === 'WEB DEV' ? 'bg-gray-100 text-gray-700' :
-                          'bg-blue-100 text-blue-700'
-                        }`}
+                        className="px-3 py-1 text-xs font-medium rounded border border-gray-200 text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors duration-300"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={visibleProjects.has(index) ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.4, delay: index * 0.1 + 0.4 + catIndex * 0.1 }}
-                        whileHover={{ scale: 1.1 }}
+                        whileHover={{ scale: 1.02 }}
                       >
                         {cat}
                       </motion.span>
                     ))}
+                  </div>
+
+                  {/* Project link indicator */}
+                  <div className="flex items-center mt-4 text-gray-800 group-hover:text-gray-900 transition-colors duration-300">
+                    <span className="text-xs font-medium uppercase tracking-wide">View Project</span>
+                    <motion.svg 
+                      className="w-3 h-3 ml-2" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                      animate={{ x: 0 }}
+                      whileHover={{ x: 3 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </motion.svg>
                   </div>
                 </motion.div>
               </div>
