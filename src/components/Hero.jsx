@@ -6,6 +6,7 @@ import { useTypewriter } from '../hooks/useTypewriter'
 
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const scrollY = useScrollAnimation()
   
   // Typewriter effect for the name - memoized to prevent re-initialization
@@ -14,6 +15,16 @@ const Hero = () => {
 
   useEffect(() => {
     setIsLoaded(true)
+    
+    // Check if screen is mobile size
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 1024) // Hide scroll indicator on screens < 1024px (only show on desktop)
+    }
+    
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    
+    return () => window.removeEventListener('resize', checkScreenSize)
   }, [])
 
   const containerVariants = {
@@ -96,11 +107,11 @@ const Hero = () => {
             
             <motion.div 
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start -mt-2"
+              className="space-x-4"
             >
               <motion.a 
                 href="#work"
-                className="inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white font-medium rounded-full transition-all duration-200"
+                className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-medium rounded-full transition-all duration-200"
                 whileHover={{ 
                   scale: 1.05,
                   backgroundColor: "#2563eb",
@@ -112,7 +123,7 @@ const Hero = () => {
               </motion.a>
               <motion.a 
                 href="#contact"
-                className="inline-flex items-center justify-center px-8 py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-full transition-all duration-200"
+                className="inline-flex items-center px-8 py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-full transition-all duration-200"
                 whileHover={{ 
                   scale: 1.05,
                   borderColor: "#6b7280",
@@ -188,25 +199,27 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center"
+      {/* Scroll Indicator - Only show on desktop */}
+      {!isMobile && (
+        <motion.div 
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
         >
-          <motion.div 
-            className="w-1 h-3 bg-gray-400 rounded-full mt-2"
-            animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          />
+            className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center"
+          >
+            <motion.div 
+              className="w-1 h-3 bg-gray-400 rounded-full mt-2"
+              animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </motion.div>
         </motion.div>
-      </motion.div>
+      )}
     </section>
   )
 }

@@ -55,10 +55,10 @@ const Header = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-end sm:justify-between items-center h-16">
-          {/* Logo with Profile - Hidden on mobile */}
+        <div className="flex justify-between items-center h-16">
+          {/* Logo with Profile */}
           <motion.div 
-            className="hidden sm:flex items-center space-x-3 group cursor-pointer"
+            className="flex items-center space-x-3 group cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
