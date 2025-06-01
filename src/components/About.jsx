@@ -7,14 +7,14 @@ const About = () => {
   const [skillsRef, skillsVisible] = useScrollTrigger(0.2)
 
   const skills = [
-    { name: 'Web Programming', level: 95 },
-    { name: 'Design', level: 95 },
-    { name: 'Troubleshooting', level: 95 },
-    { name: 'Artificial Intelligent', level: 90 },
-    { name: 'Machine Learning', level: 85 },
-    { name: 'Computer Vision', level: 92 },
-    { name: 'Prompting', level: 92 },
-    { name: 'Natural Language Processing', level: 88 }
+    { name: 'Web Programming', icon: '💻', color: 'from-blue-500 to-purple-600' },
+    { name: 'Design', icon: '🎨', color: 'from-pink-500 to-red-500' },
+    { name: 'Troubleshooting', icon: '🔧', color: 'from-green-500 to-blue-500' },
+    { name: 'Artificial Intelligence', icon: '🤖', color: 'from-purple-500 to-indigo-600' },
+    { name: 'Machine Learning', icon: '🧠', color: 'from-orange-500 to-red-500' },
+    { name: 'Computer Vision', icon: '👁️', color: 'from-cyan-500 to-blue-600' },
+    { name: 'Prompting', icon: '💬', color: 'from-emerald-500 to-teal-600' },
+    { name: 'Natural Language Processing', icon: '🗣️', color: 'from-violet-500 to-purple-600' }
   ]
 
   const containerVariants = {
@@ -74,80 +74,89 @@ const About = () => {
             >
             Building upon my existing AI knowledge, I am working on a project that leverages Transformer-based models to develop a personalized AI Assistant tailored to user-specific language and communication styles.
             </motion.p>
-            
-            <motion.div 
-              ref={skillsRef}
-              className="space-y-4"
-              variants={containerVariants}
-              initial="hidden"
-              animate={skillsVisible ? "visible" : "hidden"}
-            >
-              {skills.map((skill, index) => (
-                <motion.div 
-                  key={index} 
-                  className="skill-item"
-                  variants={itemVariants}
-                  transition={{ delay: index * 0.2 }}
-                >
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">{skill.name}</span>
-                    <span className="text-sm text-gray-500">{skill.level}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <motion.div 
-                      className="bg-blue-600 h-2 rounded-full"
-                      initial={{ width: 0 }}
-                      animate={skillsVisible ? { width: `${skill.level}%` } : { width: 0 }}
-                      transition={{ 
-                        duration: 1.5, 
-                        delay: index * 0.2 + 0.5,
-                        ease: "easeOut" 
-                      }}
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
           </motion.div>
 
           <motion.div 
-            className="relative flex justify-center"
-            initial={{ opacity: 0, x: 50 }}
-            animate={aboutVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            ref={skillsRef}
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate={skillsVisible ? "visible" : "hidden"}
           >
-            <motion.div 
-              className="relative z-10 w-80 h-80 mx-auto"
+            <motion.h3 
+              variants={itemVariants}
+              className="text-3xl font-bold text-gray-900 mb-8"
             >
-              <div className="w-full h-full rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 p-8 shadow-xl">
-                <div className="text-center h-full flex flex-col justify-center">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={aboutVisible ? { scale: 1 } : { scale: 0 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
-                    className="text-6xl mb-4"
-                  >
-                    🚀
-                  </motion.div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">Innovation</h3>
-                  <p className="text-gray-600">
-                    Passionate about creating cutting-edge AI solutions and pushing the boundaries of technology.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-            <motion.div 
-              className="absolute top-4 right-4 w-72 h-72 bg-blue-200 rounded-2xl -z-10"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={aboutVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-            />
-            <motion.div 
-              className="absolute -bottom-4 -left-4 w-32 h-32 bg-yellow-200 rounded-2xl -z-10"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={aboutVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-            />
+              Skills & Expertise
+            </motion.h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {skills.map((skill, index) => (
+                <motion.div 
+                  key={index} 
+                  className="skill-card group"
+                  variants={itemVariants}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ 
+                    scale: 1.02,
+                    y: -5,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="relative p-5 rounded-2xl bg-white shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 group-hover:border-gray-200">
+                    {/* Gradient Border Effect */}
+                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${skill.color} p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
+                      <div className="w-full h-full bg-white rounded-2xl" />
+                    </div>
+                    
+                    <div className="relative z-10 flex items-center space-x-4">
+                      {/* Icon Container */}
+                      <motion.div 
+                        className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${skill.color} flex items-center justify-center shadow-lg`}
+                        whileHover={{ 
+                          scale: 1.1,
+                          rotate: [0, -5, 5, 0],
+                          transition: { duration: 0.4 }
+                        }}
+                      >
+                        <span className="text-xl text-white">
+                          {skill.icon}
+                        </span>
+                      </motion.div>
+                      
+                      {/* Skill Name */}
+                      <div className="flex-1">
+                        <h4 className="text-base font-semibold text-gray-800 group-hover:text-gray-900 transition-colors duration-300">
+                          {skill.name}
+                        </h4>
+                        <motion.div 
+                          className={`h-1 bg-gradient-to-r ${skill.color} rounded-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                          initial={{ scaleX: 0 }}
+                          whileHover={{ scaleX: 1 }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      </div>
+                      
+                      {/* Arrow Icon */}
+                      <motion.div 
+                        className="flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors duration-300"
+                        whileHover={{ x: 3 }}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </motion.div>
+                    </div>
+                    
+                    {/* Subtle Background Pattern */}
+                    <div className="absolute top-0 right-0 w-20 h-20 opacity-5">
+                      <div className={`w-full h-full bg-gradient-to-br ${skill.color} rounded-full transform translate-x-6 -translate-y-6`} />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
