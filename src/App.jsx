@@ -13,7 +13,7 @@ function App() {
       <About />
       <SelectedWork />
       <Contact />
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }

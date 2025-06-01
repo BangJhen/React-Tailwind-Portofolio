@@ -89,16 +89,18 @@ const Hero = () => {
               variants={itemVariants}
               className="text-xl text-gray-600 mb-8 max-w-3xl lg:max-w-none"
             >
-              Agentic AI Enthusiast | ML/AI Engineer and Data Scientist Telkom University Data Science Student 
+              Agentic AI Enthusiast | ML/AI Engineer and Data Scientist 
+              <br/>
+              Telkom University Data Science Student 
             </motion.p>
             
             <motion.div 
               variants={itemVariants}
-              className="space-x-4"
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start -mt-2"
             >
               <motion.a 
                 href="#work"
-                className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-medium rounded-full transition-all duration-200"
+                className="inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white font-medium rounded-full transition-all duration-200"
                 whileHover={{ 
                   scale: 1.05,
                   backgroundColor: "#2563eb",
@@ -110,7 +112,7 @@ const Hero = () => {
               </motion.a>
               <motion.a 
                 href="#contact"
-                className="inline-flex items-center px-8 py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-full transition-all duration-200"
+                className="inline-flex items-center justify-center px-8 py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-full transition-all duration-200"
                 whileHover={{ 
                   scale: 1.05,
                   borderColor: "#6b7280",

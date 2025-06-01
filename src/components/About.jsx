@@ -7,11 +7,14 @@ const About = () => {
   const [skillsRef, skillsVisible] = useScrollTrigger(0.2)
 
   const skills = [
-    { name: 'UI/UX Design', level: 95 },
-    { name: 'React Development', level: 90 },
-    { name: 'Mobile Development', level: 85 },
-    { name: 'Web Development', level: 92 },
-    { name: 'Brand Identity', level: 88 }
+    { name: 'Web Programming', level: 95 },
+    { name: 'Design', level: 95 },
+    { name: 'Troubleshooting', level: 95 },
+    { name: 'Artificial Intelligent', level: 90 },
+    { name: 'Machine Learning', level: 85 },
+    { name: 'Computer Vision', level: 92 },
+    { name: 'Prompting', level: 92 },
+    { name: 'Natural Language Processing', level: 88 }
   ]
 
   const containerVariants = {

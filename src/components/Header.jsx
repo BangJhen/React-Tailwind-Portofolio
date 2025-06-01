@@ -6,21 +6,41 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [hoveredItem, setHoveredItem] = useState(null)
+  const [activeSection, setActiveSection] = useState('home')
 
-  // Handle scroll effect
+  // Handle scroll effect and active section detection
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
+      
+      // Section detection for active navigation
+      const sections = ['home', 'about', 'work', 'contact']
+      const offset = 100 // Offset for when to consider a section active
+      
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const isInViewport = rect.top <= offset && rect.bottom >= offset
+          
+          if (isInViewport) {
+            setActiveSection(sectionId)
+            break
+          }
+        }
+      }
     }
+    
+    handleScroll() // Check initial state
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const navItems = [
-    { name: 'Home', href: '#home', icon: '🏠' },
-    { name: 'Work', href: '#work', icon: '💼' },
-    { name: 'About', href: '#about', icon: '👤' },
-    { name: 'Contact', href: '#contact', icon: '📧' }
+    { name: 'Home', href: '#home', icon: '🏠', id: 'home' },
+    { name: 'About', href: '#about', icon: '👤', id: 'about' },
+    { name: 'Work', href: '#work', icon: '💼', id: 'work' },
+    { name: 'Contact', href: '#contact', icon: '📧', id: 'contact' }
   ]
 
   return (
@@ -35,10 +55,10 @@ const Header = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo with Profile */}
+        <div className="flex justify-end sm:justify-between items-center h-16">
+          {/* Logo with Profile - Hidden on mobile */}
           <motion.div 
-            className="flex items-center space-x-3 group cursor-pointer"
+            className="hidden sm:flex items-center space-x-3 group cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -100,14 +120,23 @@ const Header = () => {
                 >
                   <motion.a
                     href={item.href}
-                    className="relative px-4 py-2 rounded-lg text-gray-700 font-medium transition-all duration-300 flex items-center space-x-2 group"
+                    className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 group ${
+                      activeSection === item.id 
+                        ? 'text-blue-600 bg-blue-50 shadow-sm' 
+                        : 'text-gray-700 hover:text-blue-600'
+                    }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <motion.span 
-                      className="text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className={`text-lg transition-opacity duration-300 ${
+                        activeSection === item.id 
+                          ? 'opacity-100' 
+                          : 'opacity-0 group-hover:opacity-100'
+                      }`}
                       animate={{ 
-                        rotate: hoveredItem === item.name ? [0, 10, -10, 0] : 0 
+                        rotate: hoveredItem === item.name || activeSection === item.id ? [0, 10, -10, 0] : 0,
+                        scale: activeSection === item.id ? 1.1 : 1
                       }}
                       transition={{ duration: 0.5 }}
                     >
@@ -125,13 +154,30 @@ const Header = () => {
                     
                     {/* Active Indicator */}
                     <AnimatePresence>
-                      {hoveredItem === item.name && (
+                      {(hoveredItem === item.name || activeSection === item.id) && (
                         <motion.div
-                          className="absolute -bottom-1 left-1/2 w-6 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
+                          className={`absolute -bottom-1 left-1/2 w-6 h-0.5 rounded-full ${
+                            activeSection === item.id 
+                              ? 'bg-blue-500' 
+                              : 'bg-gradient-to-r from-blue-500 to-purple-600'
+                          }`}
                           initial={{ scale: 0, x: '-50%' }}
                           animate={{ scale: 1, x: '-50%' }}
                           exit={{ scale: 0, x: '-50%' }}
                           transition={{ duration: 0.2 }}
+                        />
+                      )}
+                    </AnimatePresence>
+                    
+                    {/* Active Section Checkpoint Indicator */}
+                    <AnimatePresence>
+                      {activeSection === item.id && (
+                        <motion.div
+                          className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full border border-white"
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
                         />
                       )}
                     </AnimatePresence>
@@ -192,7 +238,11 @@ const Header = () => {
                 <motion.a 
                   key={item.name}
                   href={item.href} 
-                  className="group flex items-center space-x-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-700 transition-all duration-200"
+                  className={`group flex items-center space-x-3 px-3 py-3 rounded-lg font-medium transition-all duration-200 ${
+                    activeSection === item.id
+                      ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-500'
+                      : 'text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-700'
+                  }`}
                   onClick={() => setIsMenuOpen(false)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -204,17 +254,42 @@ const Header = () => {
                   <motion.span 
                     className="text-xl"
                     whileHover={{ scale: 1.2, rotate: 10 }}
+                    animate={{ 
+                      scale: activeSection === item.id ? 1.1 : 1,
+                      rotate: activeSection === item.id ? [0, 5, -5, 0] : 0
+                    }}
                     transition={{ duration: 0.2 }}
                   >
                     {item.icon}
                   </motion.span>
-                  <span className="font-medium">{item.name}</span>
+                  <span className="flex-1">{item.name}</span>
                   <motion.div 
-                    className="ml-auto w-2 h-2 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100"
+                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                      activeSection === item.id 
+                        ? 'bg-blue-500 scale-100 opacity-100' 
+                        : 'bg-blue-500 scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100'
+                    }`}
                     initial={{ scale: 0 }}
-                    whileHover={{ scale: 1 }}
+                    animate={{ 
+                      scale: activeSection === item.id ? 1 : 0,
+                      opacity: activeSection === item.id ? 1 : 0
+                    }}
+                    whileHover={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.2 }}
                   />
+                  
+                  {/* Active checkpoint indicator for mobile */}
+                  <AnimatePresence>
+                    {activeSection === item.id && (
+                      <motion.div
+                        className="absolute right-1 top-1 w-2 h-2 bg-blue-500 rounded-full"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </AnimatePresence>
                 </motion.a>
               ))}
             </div>
