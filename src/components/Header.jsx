@@ -71,12 +71,12 @@ const Header = () => {
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gradient-to-r from-blue-500 to-purple-600 p-0.5">
                 <div className="w-full h-full rounded-full overflow-hidden bg-white">
                   <img 
-                    src="https://drive.google.com/uc?export=view&id=1099ewjmLxJjXAwc0CvYcgCo-0lq5FNk7" 
+                    src="/photo_profile.png" 
                     alt="Ammar Ridho"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       console.log('Image failed to load from Google Drive, falling back to local');
-                      e.target.src = "/src/assets/photo_profile.png";
+                      e.target.src = "/photo_profile.png";
                     }}
                     onLoad={() => console.log('Google Drive image loaded successfully')}
                   />

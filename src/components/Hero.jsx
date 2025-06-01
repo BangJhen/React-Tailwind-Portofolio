@@ -150,7 +150,7 @@ const Hero = () => {
             >
               <div className="w-full h-full rounded-full overflow-hidden border-4 border-gray-100 relative bg-gradient-to-br from-blue-50 to-indigo-100">
                 <img 
-                  src="/src/assets/photo_profile.png" 
+                  src="/photo_profile.png" 
                   alt="Muhammad Ammar Ridho"
                   className="w-full h-full object-cover relative z-10"
                   style={{ objectPosition: '50% 20%' }}
