@@ -1,12 +1,56 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useScrollTrigger } from '../hooks/useAnimations'
 
 const About = () => {
   const [aboutRef, aboutVisible] = useScrollTrigger(0.3)
   const [skillsRef, skillsVisible] = useScrollTrigger(0.2)
   const [selectedSkill, setSelectedSkill] = useState(null)
+
+  // Scroll lock effect when modal is open
+  useEffect(() => {
+    if (selectedSkill) {
+      // Save current scroll position
+      const scrollY = window.scrollY
+      
+      // Lock body scroll
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
+      document.body.style.overflow = 'hidden'
+      
+      // Cleanup function to restore scroll
+      return () => {
+        document.body.style.position = ''
+        document.body.style.top = ''
+        document.body.style.width = ''
+        document.body.style.overflow = ''
+        
+        // Restore scroll position
+        window.scrollTo(0, scrollY)
+      }
+    }
+  }, [selectedSkill])
+
+  // Enhanced close function with accessibility
+  const closeModal = () => {
+    setSelectedSkill(null)
+  }
+
+  // Handle escape key press
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && selectedSkill) {
+        closeModal()
+      }
+    }
+
+    if (selectedSkill) {
+      document.addEventListener('keydown', handleEscape)
+      return () => document.removeEventListener('keydown', handleEscape)
+    }
+  }, [selectedSkill])
 
   const skills = [
     { 
@@ -213,12 +257,12 @@ const About = () => {
         {/* Pop-out Modal for Skill Description */}
         {selectedSkill && (
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-white/10 backdrop-blur-md flex items-center justify-center z-50 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={() => setSelectedSkill(null)}
+            onClick={closeModal}
           >
             <motion.div
               className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl"
@@ -240,13 +284,14 @@ const About = () => {
                   
                   {/* X Button - Clean white circle in top right */}
                   <motion.button
-                    onClick={() => setSelectedSkill(null)}
+                    onClick={closeModal}
                     className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-all duration-200 shadow-lg"
                     whileHover={{ 
                       scale: 1.05,
                       transition: { duration: 0.2 }
                     }}
                     whileTap={{ scale: 0.95 }}
+                    aria-label="Close skill description"
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -256,26 +301,27 @@ const About = () => {
               </div>
 
               {/* Modal Content */}
-              <div className="p-8">
-                {/* Skill Info Section */}
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${selectedSkill.color} flex items-center justify-center shadow-md`}>
-                    <span className="text-xl text-white">{selectedSkill.icon}</span>
-                  </div>
-                  <h4 className="text-2xl font-bold text-gray-900">{selectedSkill.name}</h4>
-                </div>
-
+              <div className="p-8 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                 {/* Description */}
                 <div className="prose prose-gray max-w-none">
                   <p className="text-gray-700 leading-relaxed text-lg">
                     {selectedSkill.description}
+                  </p>
+                  
+                  {/* Additional content for demonstration */}
+                  <p className="text-gray-700 leading-relaxed text-lg mt-4">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </p>
+                  
+                  <p className="text-gray-700 leading-relaxed text-lg mt-4">
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                   </p>
                 </div>
                 
                 {/* Footer instruction */}
                 <div className="mt-8 pt-6 border-t border-gray-100">
                   <p className="text-sm text-gray-500 italic text-center">
-                    Click outside or press the × button to close
+                    Click outside, press ESC, or press the × button to close
                   </p>
                 </div>
               </div>
