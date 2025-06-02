@@ -68,25 +68,22 @@ const Hero = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-4 sm:py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 lg:gap-6 xl:gap-8 items-center">
           {/* Text Content */}
           <motion.div 
-            className="text-center lg:text-left order-2 lg:order-1 w-full lg:max-w-none"
+            className="text-center lg:text-left order-2 lg:order-1 w-full lg:max-w-none lg:col-span-7"
             variants={containerVariants}
             initial="hidden"
             animate={isLoaded ? "visible" : "hidden"}
           >
             <motion.h1 
               variants={itemVariants}
-              className="hero-interactive-text hero-creative-gradient text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-5 relative leading-tight text-center lg:text-left"
-              whileHover={{
-                scale: 1.02,
-                transition: { duration: 0.3, ease: "easeOut" }
-              }}
+              className="hero-creative-gradient text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-5 relative leading-tight text-center lg:text-left"
             >
               <div className="flex items-baseline justify-center lg:justify-start">
                 <span 
                   className="prismatic-text whitespace-nowrap font-extrabold"
+                  data-text={nameText}
                 >
                   {nameText}
                 </span>
@@ -276,7 +273,7 @@ const Hero = () => {
 
           {/* Profile Image */}
           <motion.div 
-            className="relative flex justify-center order-1 lg:order-2"
+            className="relative flex justify-center order-1 lg:order-2 lg:col-span-3"
             initial={{ opacity: 0, x: 50 }}
             animate={isLoaded ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.8, delay: 0.5 }}

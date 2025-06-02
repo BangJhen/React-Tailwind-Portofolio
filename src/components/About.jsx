@@ -79,56 +79,142 @@ const About = () => {
   }
 
   return (
-    <section id="about" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={aboutRef} className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <section id="about" className="relative py-20 min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50 overflow-hidden">
+      {/* Modern Background Design */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Animated gradient orbs */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-purple-200/30 to-blue-200/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-32 right-10 w-80 h-80 bg-gradient-to-br from-indigo-200/40 to-purple-200/40 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-blue-200/20 to-cyan-200/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+        
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div className="h-full w-full" style={{
+            backgroundImage: `
+              linear-gradient(to right, #000 1px, transparent 1px),
+              linear-gradient(to bottom, #000 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px'
+          }}></div>
+        </div>
+        
+        {/* Floating geometric shapes */}
+        <div className="absolute top-1/4 right-1/4 w-4 h-4 bg-purple-400/20 rounded-full animate-bounce delay-200"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-3 h-3 bg-blue-400/30 rounded-sm transform rotate-45 animate-pulse delay-700"></div>
+        <div className="absolute top-3/4 right-1/3 w-2 h-8 bg-gradient-to-b from-indigo-400/20 to-purple-400/20 rounded-full animate-pulse delay-1200"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div ref={aboutRef} className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-20 items-center">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={aboutVisible ? "visible" : "hidden"}
+            className="relative"
           >
-            <motion.h2 
+            {/* Enhanced Section Header */}
+            <motion.div 
               variants={itemVariants}
-              className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+              className="relative mb-8"
             >
-              About Me
-            </motion.h2>
-            <motion.p 
-              variants={itemVariants}
-              className="text-lg text-gray-600 mb-6 text-justify"
-            >
-              I'm a passionate Artificial Intellegent, Web Developer with over 1 years of experience. 
-            </motion.p>
-            <motion.p 
-              variants={itemVariants}
-              className="text-lg text-gray-600 mb-8 text-justify"
-            >
-            I have experience in Time Series Forecasting competitions, where I applied innovative methods and techniques. I also have hands-on experience in implementing AI solutions, such as using Computer Vision for music control through hand gestures.
-            Currently, I’m deeply interested in Large Language Models (LLMs). 
-            </motion.p>
+              <motion.h2 
+                className="text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 leading-tight"
+                whileHover={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                  transition: { duration: 2 }
+                }}
+              >
+                About Me
+              </motion.h2>
+              
+              {/* Decorative accent line */}
+              <motion.div 
+                className="mt-4 w-24 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full"
+                initial={{ scaleX: 0 }}
+                animate={aboutVisible ? { scaleX: 1 } : { scaleX: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+              />
+              
+              {/* Background text decoration */}
+              <div className="absolute -top-4 -left-4 text-8xl md:text-9xl font-black text-purple-100/30 -z-10 select-none">
+                About
+              </div>
+            </motion.div>
+
+            {/* Enhanced Content Container */}
+            <div className="relative bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
+              {/* Content paragraphs with improved typography */}
+              <motion.p 
+                variants={itemVariants}
+                className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed font-medium"
+              >
+                I'm a passionate <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 font-semibold">Artificial Intelligence Engineer</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-semibold">Web Developer</span> with over 1 year of experience creating innovative solutions that bridge technology and human needs.
+              </motion.p>
+              
+              <motion.p 
+                variants={itemVariants}
+                className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed"
+              >
+                My expertise spans <strong className="text-gray-900">Time Series Forecasting</strong> competitions, where I've applied cutting-edge methods and techniques. I've also gained hands-on experience implementing AI solutions, including <strong className="text-gray-900">Computer Vision for music control through hand gestures</strong> - a project that showcases my ability to translate complex AI concepts into practical applications.
+              </motion.p>
 
               <motion.p 
-              variants={itemVariants}
-              className="text-lg text-gray-600 mb-8 text-justify"
-            >
-            Building upon my existing AI knowledge, I am working on a project that leverages Transformer-based models to develop a personalized AI Assistant tailored to user-specific language and communication styles.
-            </motion.p>
+                variants={itemVariants}
+                className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed"
+              >
+                Currently, I'm deeply focused on <strong className="text-gray-900">Large Language Models (LLMs)</strong> and their transformative potential. I'm working on developing a <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-semibold">personalized AI Assistant</span> that leverages Transformer-based models to understand and adapt to user-specific language patterns and communication styles.
+              </motion.p>
+
+              {/* Enhanced stats or highlights */}
+              <motion.div 
+                variants={itemVariants}
+                className="grid grid-cols-2 gap-6 mt-8 pt-6 border-t border-gray-200/50"
+              >
+                <div className="text-center lg:text-left">
+                  <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">1+</div>
+                  <div className="text-sm text-gray-600 font-medium">Years Experience</div>
+                </div>
+                <div className="text-center lg:text-left">
+                  <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI/ML</div>
+                  <div className="text-sm text-gray-600 font-medium">Specialization</div>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
 
           <motion.div 
             ref={skillsRef}
-            className="space-y-6"
+            className="relative space-y-6"
             variants={containerVariants}
             initial="hidden"
             animate={skillsVisible ? "visible" : "hidden"}
           >
-            <motion.h3 
+            {/* Enhanced Skills Header */}
+            <motion.div 
               variants={itemVariants}
-              className="text-3xl font-bold text-gray-900 mb-8"
+              className="relative mb-8"
             >
-              Skills & Expertise
-            </motion.h3>
+              <motion.h3 
+                className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-4"
+              >
+                Skills & Expertise
+              </motion.h3>
+              
+              {/* Decorative line for skills section */}
+              <motion.div 
+                className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
+                initial={{ scaleX: 0 }}
+                animate={skillsVisible ? { scaleX: 1 } : { scaleX: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              />
+              
+              {/* Background decoration */}
+              <div className="absolute -top-2 -right-4 text-6xl md:text-7xl font-black text-blue-100/20 -z-10 select-none">
+                Skills
+              </div>
+            </motion.div>
             
+            {/* Enhanced Skills Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {skills.map((skill, index) => (
                 <motion.div 
@@ -144,14 +230,14 @@ const About = () => {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setSelectedSkill(selectedSkill === skill ? null : skill)}
                 >
-                  <div className={`relative p-5 rounded-2xl bg-white shadow-md hover:shadow-xl transition-all duration-300 border ${selectedSkill === skill ? 'border-gray-300 shadow-lg' : 'border-gray-100 group-hover:border-gray-200'}`}>
-                    {/* Gradient Border Effect */}
+                  <div className={`relative p-5 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-300 border ${selectedSkill === skill ? 'border-purple-300 shadow-xl' : 'border-white/30 group-hover:border-purple-200'}`}>
+                    {/* Enhanced Gradient Border Effect */}
                     <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${skill.color} p-[1px] ${selectedSkill === skill ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} transition-opacity duration-300`}>
-                      <div className="w-full h-full bg-white rounded-2xl" />
+                      <div className="w-full h-full bg-white/90 backdrop-blur-sm rounded-2xl" />
                     </div>
                     
                     <div className="relative z-10 flex items-center space-x-4">
-                      {/* Icon Container */}
+                      {/* Enhanced Icon Container */}
                       <motion.div 
                         className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${skill.color} flex items-center justify-center shadow-lg`}
                         whileHover={{ 
@@ -165,7 +251,7 @@ const About = () => {
                         </span>
                       </motion.div>
                       
-                      {/* Skill Name */}
+                      {/* Enhanced Skill Name */}
                       <div className="flex-1">
                         <h4 className="text-base font-semibold text-gray-800 group-hover:text-gray-900 transition-colors duration-300">
                           {skill.name}
@@ -179,7 +265,7 @@ const About = () => {
                         />
                       </div>
                       
-                      {/* Arrow Icon */}
+                      {/* Enhanced Arrow Icon */}
                       <motion.div 
                         className="flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors duration-300"
                         animate={{ 
@@ -194,23 +280,21 @@ const About = () => {
                       </motion.div>
                     </div>
                     
-                    {/* Subtle Background Pattern */}
-                    <div className="absolute top-0 right-0 w-20 h-20 opacity-5">
-                      <div className={`w-full h-full bg-gradient-to-br ${skill.color} rounded-full transform translate-x-6 -translate-y-6`} />
+                    {/* Enhanced Background Pattern */}
+                    <div className="absolute top-0 right-0 w-20 h-20 opacity-10">
+                      <div className={`w-full h-full bg-gradient-to-br ${skill.color} rounded-full transform translate-x-6 -translate-y-6 blur-sm`} />
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
-
-
           </motion.div>
         </div>
 
-        {/* Pop-out Modal for Skill Description */}
+        {/* Enhanced Pop-out Modal for Skill Description */}
         {selectedSkill && (
           <motion.div
-            className="fixed inset-0 bg-white/10 backdrop-blur-md flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/20 backdrop-blur-md flex items-center justify-center z-50 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -218,14 +302,14 @@ const About = () => {
             onClick={closeModal}
           >
             <motion.div
-              className="bg-white rounded-3xl max-w-6xl w-full max-h-[90vh] shadow-2xl"
+              className="bg-white/95 backdrop-blur-lg rounded-3xl max-w-6xl w-full max-h-[90vh] shadow-2xl border border-white/20"
               initial={{ scale: 0.8, opacity: 0, y: 50 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0, y: 50 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Modal Header */}
+              {/* Enhanced Modal Header */}
               <div className={`relative p-6 rounded-t-3xl bg-gradient-to-r ${selectedSkill.color}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -235,10 +319,10 @@ const About = () => {
                     <h3 className="text-3xl font-bold text-white">{selectedSkill.name}</h3>
                   </div>
                   
-                  {/* X Button - Clean white circle in top right */}
+                  {/* Enhanced X Button */}
                   <motion.button
                     onClick={closeModal}
-                    className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-all duration-200 shadow-lg"
+                    className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-600 hover:text-gray-800 hover:bg-white transition-all duration-200 shadow-lg"
                     whileHover={{ 
                       scale: 1.05,
                       transition: { duration: 0.2 }
@@ -253,7 +337,7 @@ const About = () => {
                 </div>
               </div>
 
-              {/* Modal Content */}
+              {/* Enhanced Modal Content */}
               <div className="p-8 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                 {/* Summary */}
                 <div className="mb-8">
@@ -267,7 +351,7 @@ const About = () => {
                   {selectedSkill.sections?.map((section, index) => (
                     <motion.div
                       key={index}
-                      className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:border-gray-200 transition-all duration-300"
+                      className="bg-gray-50/80 backdrop-blur-sm rounded-xl p-6 border border-gray-100/50 hover:border-gray-200 transition-all duration-300"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
@@ -293,7 +377,7 @@ const About = () => {
                 </div>
                 
                 {/* Footer instruction */}
-                <div className="mt-8 pt-6 border-t border-gray-100">
+                <div className="mt-8 pt-6 border-t border-gray-100/50">
                   <p className="text-sm text-gray-500 italic text-center">
                     Click outside, press ESC, or press the × button to close
                   </p>
