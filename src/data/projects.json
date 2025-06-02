@@ -1,0 +1,23 @@
+{
+  "projects": [
+    {
+      "id": "sentiment-analysis",
+      "title": "Sentiment Analysis Project",
+      "category": "Machine Learning",
+      "description": "Advanced sentiment analysis system using deep learning techniques for real-time text classification and emotion detection.",
+      "image": "/sentiment_analysis_project_img.png",
+      "technologies": ["Python", "TensorFlow", "NLTK", "Flask", "React"],
+      "features": [
+        "Real-time sentiment classification",
+        "Multi-language support",
+        "Emotion detection beyond basic sentiment",
+        "Interactive web interface",
+        "RESTful API for integration"
+      ],
+      "github": "https://github.com/your-username/sentiment-analysis",
+      "demo": "https://sentiment-demo.yourdomain.com",
+      "status": "completed",
+      "featured": true
+    }
+  ]
+}

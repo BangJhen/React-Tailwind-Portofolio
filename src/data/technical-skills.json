@@ -1,0 +1,64 @@
+{
+  "skills": [
+    {
+      "name": "Programming",
+      "icon": "💻",
+      "color": "from-blue-500 to-purple-600",
+      "summary": "As a skilled programmer with a focus on AI engineering and backend systems, I work fluently across multiple languages to build robust and intelligent solutions. My experience spans across scripting, backend development, and machine learning pipelines.",
+      "sections": [
+        {
+          "title": "Python",
+          "description": "Used extensively for machine learning, data preprocessing, and deep learning workflows. Proficient in handling time-series data, building LSTM-based imputation models, and managing structured datasets with libraries like pandas, NumPy, and TensorFlow."
+        },
+        {
+          "title": "JavaScript",
+          "description": "Applied mainly in web development, particularly in frontend interactions (React) and API communication. Strong understanding of asynchronous logic, DOM manipulation, and modern ECMAScript standards. Combined with TypeScript for type safety and scalability."
+        },
+        {
+          "title": "Golang",
+          "description": "Focused on high-performance backend services and concurrent systems. Used for developing fast, stateless APIs, microservices, and real-time data pipelines. Appreciated for its simplicity, performance, and strong typing in production environments."
+        }
+      ]
+    },
+    {
+      "name": "Design",
+      "icon": "🎨",
+      "color": "from-pink-500 to-red-500",
+      "summary": "Creating intuitive and visually appealing interfaces with a focus on user experience and modern design principles. My design approach combines aesthetic appeal with functional usability.",
+      "sections": [
+        {
+          "title": "UI/UX Design",
+          "description": "Designing user interfaces that prioritize usability and visual hierarchy. Experience with wireframing, prototyping, and creating design systems that scale across different platforms and devices."
+        },
+        {
+          "title": "Frontend Development",
+          "description": "Translating designs into responsive, interactive web applications using modern CSS frameworks like Tailwind CSS, along with component-based architectures in React for maintainable and scalable interfaces."
+        },
+        {
+          "title": "Design Tools",
+          "description": "Proficient in industry-standard design tools including Figma for collaborative design work, Adobe Creative Suite for graphic design, and various prototyping tools for user testing and validation."
+        }
+      ]
+    },
+    {
+      "name": "Troubleshooting",
+      "icon": "🔧",
+      "color": "from-green-500 to-blue-500",
+      "summary": "Systematic problem-solving approach to identify, analyze, and resolve technical issues across different systems and platforms. Strong analytical skills for debugging complex software and hardware problems.",
+      "sections": [
+        {
+          "title": "System Debugging",
+          "description": "Experienced in diagnosing and resolving system-level issues, including performance bottlenecks, memory leaks, and configuration problems across various operating systems and environments."
+        },
+        {
+          "title": "Code Debugging",
+          "description": "Proficient in using debugging tools, log analysis, and systematic testing approaches to identify and fix software bugs. Experience with various debugging techniques and error tracking systems."
+        },
+        {
+          "title": "Network & Infrastructure",
+          "description": "Skilled in troubleshooting network connectivity issues, server configurations, and deployment problems. Experience with monitoring tools and proactive issue prevention strategies."
+        }
+      ]
+    }
+  ]
+}
