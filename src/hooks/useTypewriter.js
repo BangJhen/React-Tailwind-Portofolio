@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 
-export const useTypewriter = (text, speed = 100, delay = 0, pauseTime = 3000, backspaceSpeed = 25) => {
+export const useTypewriter = (text, speed = 100, delay = 0, pauseTime = 5000, backspaceSpeed = 30) => {
   const [displayText, setDisplayText] = useState('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isTyping, setIsTyping] = useState(true) // true for typing, false for backspacing

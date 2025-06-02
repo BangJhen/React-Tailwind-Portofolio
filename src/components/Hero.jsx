@@ -14,9 +14,9 @@ const Hero = () => {
   const { displayText: nameText } = useTypewriter(name, 100, 800)
 
   // Debug logging
-  useEffect(() => {
-    console.log('nameText:', nameText, 'length:', nameText.length)
-  }, [nameText])
+  // useEffect(() => {
+  //   console.log('nameText:', nameText, 'length:', nameText.length)
+  // }, [nameText])
 
   useEffect(() => {
     setIsLoaded(true)
@@ -78,14 +78,20 @@ const Hero = () => {
           >
             <motion.h1 
               variants={itemVariants}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 lg:mb-5 relative leading-tight text-center lg:text-left"
+              className="hero-interactive-text hero-creative-gradient text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-5 relative leading-tight text-center lg:text-left"
+              whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
             >
               <div className="flex items-baseline justify-center lg:justify-start">
-                <span className="gradient-text whitespace-nowrap">
+                <span 
+                  className="prismatic-text whitespace-nowrap font-extrabold"
+                >
                   {nameText}
                 </span>
                 <motion.span 
-                  className="text-purple-600 text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold blinking-cursor"
+                  className="text-purple-500 text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold blinking-cursor"
                   style={{ marginLeft: '2px' }}
                   animate={{ 
                     opacity: [1, 1, 0, 0]

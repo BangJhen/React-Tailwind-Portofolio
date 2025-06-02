@@ -49,14 +49,22 @@ body {
   position: relative;
   z-index: 10;
   
-  /* Fallback for browsers that don't support background-clip */
-  color: #667eea;
+  /* Strong fallback for browsers that don't support background-clip */
+  color: #4338ca;
   font-weight: inherit;
   
   /* Ensure text is fully visible */
   overflow: visible;
   text-overflow: clip;
   white-space: nowrap;
+}
+
+/* Ensure text visibility on any browser */
+@supports not (background-clip: text) {
+  .gradient-text {
+    -webkit-text-fill-color: unset;
+    color: #4338ca;
+  }
 }
 
 @keyframes gradient-shift {
@@ -563,3 +571,167 @@ body {
     height: 22rem !important;
   }
 }
+
+/* Simple & Reliable Hero H1 Hover Effects */
+.hero-interactive-text {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.hero-interactive-text:hover {
+  transform: scale(1.02);
+}
+
+/* Debug: Temporary override to ensure text visibility */
+.hero-interactive-text .gradient-text {
+  /* Temporarily show text in solid color for debugging */
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  background: none !important;
+}
+
+.hero-interactive-text:hover .gradient-text {
+  /* Re-enable gradient on hover */
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background: linear-gradient(135deg, 
+    #4338ca 0%, 
+    #7c3aed 25%, 
+    #db2777 50%, 
+    #dc2626 75%, 
+    #4338ca 100%
+  ) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  background-size: 200% 200% !important;
+  animation: smooth-gradient-flow 3s ease-in-out infinite !important;
+  filter: drop-shadow(0 2px 8px rgba(67, 56, 202, 0.3)) !important;
+}
+
+/* Smooth gradient animation */
+@keyframes smooth-gradient-flow {
+  0% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+  100% { 
+    background-position: 0% 50%; 
+  }
+}
+
+/* Enhanced Creative Gradient Text Effects for Hero */
+.hero-creative-gradient {
+  background: linear-gradient(
+    135deg,
+    #6b46c1 0%,
+    #8b5cf6 25%,
+    #a855f7 50%,
+    #c084fc 75%,
+    #7c3aed 100%
+  );
+  background-size: 250% 250%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: elegant-purple-flow 6s ease-in-out infinite;
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+}
+
+.hero-creative-gradient:hover {
+  animation: elegant-purple-hover 3s ease-in-out infinite;
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+
+@keyframes elegant-purple-flow {
+  0% { 
+    background-position: 0% 50%;
+  }
+  33% { 
+    background-position: 50% 0%;
+  }
+  66% { 
+    background-position: 100% 50%;
+  }
+  100% { 
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes elegant-purple-hover {
+  0% { 
+    background-position: 0% 50%;
+    filter: brightness(110%);
+  }
+  50% { 
+    background-position: 100% 50%;
+    filter: brightness(125%);
+  }
+  100% { 
+    background-position: 0% 50%;
+    filter: brightness(110%);
+  }
+}
+
+
+
+/* Enhanced rainbow shimmer effect */
+.rainbow-shimmer {
+  background: linear-gradient(
+    90deg,
+    #ff0000 0%,
+    #ff8000 14%,
+    #ffff00 28%,
+    #80ff00 42%,
+    #00ff00 56%,
+    #00ff80 70%,
+    #00ffff 84%,
+    #ff0000 100%
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-slide 4s linear infinite;
+}
+
+@keyframes rainbow-slide {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* Prismatic text effect for name */
+.prismatic-text {
+  background: linear-gradient(
+    45deg,
+    #6b46c1 0%,
+    #7c3aed 20%,
+    #8b5cf6 40%,
+    #a855f7 60%,
+    #c084fc 80%,
+    #6b46c1 100%
+  );
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: prismatic-shift 4s ease-in-out infinite;
+}
+
+@keyframes prismatic-shift {
+  0%, 100% { 
+    background-position: 0% 50%;
+  }
+  50% { 
+    background-position: 100% 50%;
+  }
+}
+
+
+
+
