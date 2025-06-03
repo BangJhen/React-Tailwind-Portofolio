@@ -1,162 +1,122 @@
 {
   "skills": [
     {
-      "name": "Programming",
-      "icon": "💻",
-      "color": "from-blue-500 to-purple-600",
-      "summary": "As a skilled programmer with a focus on AI engineering and backend systems, I work fluently across multiple languages to build robust and intelligent solutions. My experience spans across scripting, backend development, and machine learning pipelines.",
-      "sections": [
-        {
-          "title": "Python",
-          "description": "Used extensively for machine learning, data preprocessing, and deep learning workflows. Proficient in handling time-series data, building LSTM-based imputation models, and managing structured datasets with libraries like pandas, NumPy, and TensorFlow."
-        },
-        {
-          "title": "JavaScript",
-          "description": "Applied mainly in web development, particularly in frontend interactions (React) and API communication. Strong understanding of asynchronous logic, DOM manipulation, and modern ECMAScript standards. Combined with TypeScript for type safety and scalability."
-        },
-        {
-          "title": "Golang",
-          "description": "Focused on high-performance backend services and concurrent systems. Used for developing fast, stateless APIs, microservices, and real-time data pipelines. Appreciated for its simplicity, performance, and strong typing in production environments."
-        }
-      ]
-    },
-    {
-      "name": "Design",
-      "icon": "🎨",
-      "color": "from-pink-500 to-red-500",
-      "summary": "Creating intuitive and visually appealing interfaces with a focus on user experience and modern design principles. My design approach combines aesthetic appeal with functional usability.",
-      "sections": [
-        {
-          "title": "UI/UX Design",
-          "description": "Designing user interfaces that prioritize usability and visual hierarchy. Experience with wireframing, prototyping, and creating design systems that scale across different platforms and devices."
-        },
-        {
-          "title": "Frontend Development",
-          "description": "Translating designs into responsive, interactive web applications using modern CSS frameworks like Tailwind CSS, along with component-based architectures in React for maintainable and scalable interfaces."
-        },
-        {
-          "title": "Design Tools",
-          "description": "Proficient in industry-standard design tools including Figma for collaborative design work, Adobe Creative Suite for graphic design, and various prototyping tools for user testing and validation."
-        }
-      ]
-    },
-    {
-      "name": "Troubleshooting",
-      "icon": "🔧",
-      "color": "from-green-500 to-blue-500",
-      "summary": "Systematic problem-solving approach to identify, analyze, and resolve technical issues across different systems and platforms. Strong analytical skills for debugging complex software and hardware problems.",
-      "sections": [
-        {
-          "title": "System Debugging",
-          "description": "Experienced in diagnosing and resolving system-level issues, including performance bottlenecks, memory leaks, and configuration problems across various operating systems and environments."
-        },
-        {
-          "title": "Code Debugging",
-          "description": "Proficient in using debugging tools, log analysis, and systematic testing approaches to identify and fix software bugs. Experience with various debugging techniques and error tracking systems."
-        },
-        {
-          "title": "Network & Infrastructure",
-          "description": "Skilled in troubleshooting network connectivity issues, server configurations, and deployment problems. Experience with monitoring tools and proactive issue prevention strategies."
-        }
-      ]
-    },
-    {
-      "name": "Artificial Intelligence",
-      "icon": "🤖",
-      "color": "from-purple-500 to-indigo-600",
-      "summary": "Developing intelligent systems and applications using cutting-edge AI technologies. Focus on practical AI implementations that solve real-world problems through machine learning and deep learning approaches.",
-      "sections": [
-        {
-          "title": "Machine Learning Models",
-          "description": "Building and training various ML models including supervised, unsupervised, and reinforcement learning algorithms. Experience with model optimization, hyperparameter tuning, and deployment strategies."
-        },
-        {
-          "title": "Deep Learning",
-          "description": "Implementing neural networks for complex tasks using frameworks like TensorFlow and PyTorch. Specialized in computer vision, natural language processing, and time-series forecasting applications."
-        },
-        {
-          "title": "AI Integration",
-          "description": "Integrating AI models into production systems, creating APIs for model serving, and developing end-to-end AI pipelines. Focus on scalable and maintainable AI solutions."
-        }
-      ]
-    },
-    {
       "name": "Machine Learning",
-      "icon": "🧠",
-      "color": "from-orange-500 to-red-500",
-      "summary": "Specialized in developing predictive models and data-driven solutions. Experience with the complete ML pipeline from data preprocessing to model deployment and monitoring.",
+      "icon": "🤖",
+      "color": "from-purple-500 to-pink-600",
+      "summary": "Specialized in forecasting and predictive modeling with deep expertise in neural network architectures. Proven track record in competitions with top placements in national data science contests, focusing on time-series forecasting and multivariate analysis.",
       "sections": [
         {
-          "title": "Data Preprocessing",
-          "description": "Expert in data cleaning, feature engineering, and handling missing values using advanced techniques like LSTM-based imputation. Skilled in working with various data formats and large-scale datasets."
+          "title": "Time-Series Forecasting",
+          "description": "Expert in building advanced forecasting models using NHITS, NBEATSx, LSTM, TiDE, and TSMixerx architectures. Successfully developed models to predict daily food prices across 34 Indonesian provinces with 13 commodities, achieving top performance in competitive environments."
         },
         {
-          "title": "Model Development",
-          "description": "Building robust ML models for classification, regression, and forecasting tasks. Experience with ensemble methods, cross-validation, and statistical analysis to ensure model reliability."
+          "title": "Hybrid Deep Learning",
+          "description": "Developed innovative CNN-LSTM hybrid architectures for multivariate forecasting tasks. Specialized in combining convolutional layers for feature extraction with recurrent networks for sequential pattern recognition, particularly effective for food price index predictions."
         },
         {
-          "title": "Time Series Analysis",
-          "description": "Specialized in time series forecasting and analysis, with hands-on experience in competitions and real-world applications. Proficient in handling temporal data patterns and seasonal variations."
+          "title": "Neural Network Optimization",
+          "description": "Proficient in hyperparameter optimization using Keras Tuner and advanced model architectures. Experience with CNN implementations on MNIST and Fashion-MNIST datasets, focusing on performance optimization and model efficiency."
         }
       ]
     },
     {
-      "name": "Computer Vision",
-      "icon": "👁️",
-      "color": "from-cyan-500 to-blue-600",
-      "summary": "Developing visual recognition systems and image processing applications. Experience in creating practical CV solutions for real-world applications including gesture recognition and image analysis.",
+      "name": "Web Development",
+      "icon": "🌐",
+      "color": "from-blue-500 to-cyan-600",
+      "summary": "Full-stack developer with modern JavaScript frameworks and responsive design principles. Specialized in creating dynamic, interactive web applications with emphasis on user experience and performance optimization.",
       "sections": [
         {
-          "title": "Image Processing",
-          "description": "Advanced techniques in image preprocessing, filtering, and enhancement. Experience with OpenCV and various computer vision libraries for image manipulation and analysis."
+          "title": "React Development",
+          "description": "Proficient in building dynamic single-page applications using React framework. Created interactive portfolio websites with modern component architecture, state management, and efficient rendering patterns for optimal user experience."
         },
         {
-          "title": "Object Detection",
-          "description": "Implementing object detection and recognition systems using deep learning models. Experience with YOLO, R-CNN variants, and custom detection pipelines for specific use cases."
+          "title": "Tailwind CSS",
+          "description": "Expert in utility-first CSS framework for creating responsive, modern, and creative user interfaces. Skilled in implementing complex layouts, animations, and responsive designs that work seamlessly across all device sizes."
         },
         {
-          "title": "Gesture Recognition",
-          "description": "Developed hand gesture recognition systems for music control applications, demonstrating practical implementation of computer vision in interactive systems and real-time processing."
+          "title": "Vite & Modern Tooling",
+          "description": "Experienced with modern build tools and development environments. Utilizes Vite for fast development workflows, hot module replacement, and optimized production builds for enhanced development productivity."
         }
       ]
     },
     {
-      "name": "Prompting",
-      "icon": "💬",
-      "color": "from-emerald-500 to-teal-600",
-      "summary": "Expert in crafting effective prompts for AI language models to achieve optimal results. Deep understanding of prompt engineering techniques and AI model behavior optimization.",
+      "name": "Data Science",
+      "icon": "📊",
+      "color": "from-green-500 to-blue-600",
+      "summary": "Comprehensive data science expertise spanning from data acquisition to advanced analytics. Strong research methodologies with practical experience in competitive data science environments and real-world forecasting applications.",
+      "sections": [
+        {
+          "title": "Forecasting Specialist",
+          "description": "Deep expertise in predictive modeling and time-series analysis. Specialized in economic forecasting, particularly in commodity price prediction with integration of exogenous features for enhanced model accuracy and reliability."
+        },
+        {
+          "title": "Web Scraping & Data Acquisition",
+          "description": "Skilled in automated data collection and web crawling techniques. Proficient in extracting structured data from various sources, handling different data formats, and building robust data pipelines for continuous data ingestion."
+        },
+        {
+          "title": "Research Methodology",
+          "description": "Strong foundation in research design, hypothesis testing, and statistical analysis. Experience in academic and competitive research environments with focus on reproducible results and methodological rigor."
+        }
+      ]
+    },
+    {
+      "name": "Network Engineering",
+      "icon": "🔗",
+      "color": "from-orange-500 to-red-600",
+      "summary": "Certified network professional with expertise in enterprise networking solutions. Specialized in MikroTik technologies with national-level competition experience and industry-recognized certifications.",
+      "sections": [
+        {
+          "title": "MikroTik Certified Engineer (MTCRE)",
+          "description": "Advanced certification in routing and network engineering. Capable of designing, implementing, and troubleshooting complex network infrastructures using MikroTik RouterOS and hardware solutions."
+        },
+        {
+          "title": "Network Associate (MTCNA)",
+          "description": "Foundational expertise in network administration and configuration. Proficient in basic to intermediate networking concepts, routing protocols, and network security implementations using MikroTik systems."
+        },
+        {
+          "title": "Competition Experience",
+          "description": "National finalist in Olimpiade Jaringan Mikrotik 2023, demonstrating practical networking skills under competitive conditions. Experience in network design challenges and real-world problem-solving scenarios."
+        }
+      ]
+    },
+    {
+      "name": "Leadership & Communication",
+      "icon": "👥",
+      "color": "from-yellow-500 to-orange-600",
+      "summary": "Strong interpersonal and leadership skills with experience in team management and public presentation. Capable of translating technical concepts into business value and leading cross-functional projects.",
+      "sections": [
+        {
+          "title": "Team Leadership",
+          "description": "Experienced in leading technical teams and collaborative projects. Skilled in coordinating diverse skill sets, managing project timelines, and ensuring effective communication across different stakeholders and technical domains."
+        },
+        {
+          "title": "Public Speaking",
+          "description": "Confident presenter capable of delivering technical content to diverse audiences. Experience in explaining complex data science concepts, presenting research findings, and communicating project results to both technical and non-technical stakeholders."
+        },
+        {
+          "title": "Business Planning",
+          "description": "Skilled in creating comprehensive business plans and pitch decks. Ability to bridge technical solutions with business requirements, identify market opportunities, and present compelling value propositions to stakeholders."
+        }
+      ]
+    },
+    {
+      "name": "Emerging Technologies",
+      "icon": "⚡",
+      "color": "from-indigo-500 to-purple-600",
+      "summary": "Continuously adapting to cutting-edge technologies with focus on AI engineering and prompt optimization. Stays current with latest developments in machine learning, natural language processing, and AI-assisted development workflows.",
       "sections": [
         {
           "title": "Prompt Engineering",
-          "description": "Developing sophisticated prompting strategies for various AI tasks including text generation, analysis, and problem-solving. Understanding of different prompting techniques and their applications."
+          "description": "Skilled in designing effective prompts for large language models and AI systems. Understanding of prompt optimization techniques, context management, and leveraging AI tools for enhanced productivity and problem-solving."
         },
         {
-          "title": "AI Model Optimization",
-          "description": "Fine-tuning prompt strategies to maximize AI model performance and accuracy. Experience with different model architectures and their specific prompting requirements."
+          "title": "AI Integration",
+          "description": "Experience in integrating AI capabilities into existing workflows and applications. Focus on practical implementations of machine learning models in production environments and AI-assisted development processes."
         },
         {
-          "title": "Conversational AI",
-          "description": "Designing prompts for conversational AI systems and chatbots. Focus on creating natural, context-aware interactions that provide value to users."
-        }
-      ]
-    },
-    {
-      "name": "Natural Language Processing",
-      "icon": "🗣️",
-      "color": "from-violet-500 to-purple-600",
-      "summary": "Building intelligent language processing systems with expertise in transformer models and large language models. Focus on developing personalized AI assistants and language understanding applications.",
-      "sections": [
-        {
-          "title": "Language Models",
-          "description": "Working with transformer-based models and LLMs for various NLP tasks. Experience in model fine-tuning, training, and optimization for specific language processing requirements."
-        },
-        {
-          "title": "Text Analysis",
-          "description": "Implementing text classification, sentiment analysis, and information extraction systems. Skilled in preprocessing text data and building robust NLP pipelines."
-        },
-        {
-          "title": "Personalized AI",
-          "description": "Currently developing a personalized AI Assistant using transformer models, tailored to individual user communication styles and preferences. Focus on adaptive language understanding."
+          "title": "Technology Adaptation",
+          "description": "Quick learner with demonstrated ability to master new technologies and frameworks. Maintains awareness of industry trends and emerging tools in data science, web development, and AI engineering domains."
         }
       ]
     }

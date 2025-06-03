@@ -1,42 +1,22 @@
 {
   "skills": [
     {
-      "name": "Artificial Intelligence",
-      "icon": "🤖",
-      "color": "from-purple-500 to-indigo-600",
-      "summary": "Developing intelligent systems and applications using cutting-edge AI technologies. Focus on practical AI implementations that solve real-world problems through machine learning and deep learning approaches.",
-      "sections": [
-        {
-          "title": "Machine Learning Models",
-          "description": "Building and training various ML models including supervised, unsupervised, and reinforcement learning algorithms. Experience with model optimization, hyperparameter tuning, and deployment strategies."
-        },
-        {
-          "title": "Deep Learning",
-          "description": "Implementing neural networks for complex tasks using frameworks like TensorFlow and PyTorch. Specialized in computer vision, natural language processing, and time-series forecasting applications."
-        },
-        {
-          "title": "AI Integration",
-          "description": "Integrating AI models into production systems, creating APIs for model serving, and developing end-to-end AI pipelines. Focus on scalable and maintainable AI solutions."
-        }
-      ]
-    },
-    {
       "name": "Machine Learning",
-      "icon": "🧠",
-      "color": "from-orange-500 to-red-500",
-      "summary": "Specialized in developing predictive models and data-driven solutions. Experience with the complete ML pipeline from data preprocessing to model deployment and monitoring.",
+      "icon": "🤖",
+      "color": "from-purple-500 to-pink-600",
+      "summary": "Specialized in forecasting and predictive modeling with deep expertise in neural network architectures. Proven track record in competitions with top placements in national data science contests, focusing on time-series forecasting and multivariate analysis.",
       "sections": [
         {
-          "title": "Data Preprocessing",
-          "description": "Expert in data cleaning, feature engineering, and handling missing values using advanced techniques like LSTM-based imputation. Skilled in working with various data formats and large-scale datasets."
+          "title": "Time-Series Forecasting",
+          "description": "Expert in building advanced forecasting models using NHITS, NBEATSx, LSTM, TiDE, and TSMixerx architectures. Successfully developed models to predict daily food prices across 34 Indonesian provinces with 13 commodities, achieving top performance in competitive environments."
         },
         {
-          "title": "Model Development",
-          "description": "Building robust ML models for classification, regression, and forecasting tasks. Experience with ensemble methods, cross-validation, and statistical analysis to ensure model reliability."
+          "title": "Hybrid Deep Learning",
+          "description": "Developed innovative CNN-LSTM hybrid architectures for multivariate forecasting tasks. Specialized in combining convolutional layers for feature extraction with recurrent networks for sequential pattern recognition, particularly effective for food price index predictions."
         },
         {
-          "title": "Time Series Analysis",
-          "description": "Specialized in time series forecasting and analysis, with hands-on experience in competitions and real-world applications. Proficient in handling temporal data patterns and seasonal variations."
+          "title": "Neural Network Optimization",
+          "description": "Proficient in hyperparameter optimization using Keras Tuner and advanced model architectures. Experience with CNN implementations on MNIST and Fashion-MNIST datasets, focusing on performance optimization and model efficiency."
         }
       ]
     },

@@ -1,12 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
 import { useScrollTrigger, useStaggerAnimation } from '../hooks/useAnimations'
 
 const SelectedWork = () => {
   const [activeFilter, setActiveFilter] = useState('All')
+  const [isMobile, setIsMobile] = useState(false)
   const [headerRef, headerVisible] = useScrollTrigger(0.2)
   const [projectsRef, visibleProjects] = useStaggerAnimation(4, 200)
+
+  // Detect mobile layout
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768) // md breakpoint
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   
   const projects = [
     {
@@ -38,26 +50,26 @@ const SelectedWork = () => {
         <motion.div 
           ref={headerRef}
           className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-16"
-          initial={{ opacity: 0, y: 50 }}
-          animate={headerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          animate={isMobile ? { opacity: 1, y: 0 } : (headerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 })}
+          transition={isMobile ? { duration: 0 } : { duration: 0.8, ease: "easeOut" }}
         >
           <div className="lg:w-1/3 mb-8 lg:mb-0">
             <motion.h2 
               className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
-              initial={{ opacity: 0, x: -50 }}
-              animate={headerVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+              animate={isMobile ? { opacity: 1, x: 0 } : (headerVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 })}
+              transition={isMobile ? { duration: 0 } : { duration: 0.8, delay: 0.2 }}
             >
               Project<br />
             </motion.h2>
             <motion.button 
               className="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={headerVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+              animate={isMobile ? { opacity: 1, scale: 1 } : (headerVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 })}
+              transition={isMobile ? { duration: 0 } : { duration: 0.6, delay: 0.4 }}
+              whileHover={isMobile ? {} : { scale: 1.05 }}
+              whileTap={isMobile ? {} : { scale: 0.95 }}
             >
               See All
             </motion.button>
@@ -66,9 +78,9 @@ const SelectedWork = () => {
           {/* Filter buttons */}
           <motion.div 
             className="lg:w-2/3"
-            initial={{ opacity: 0, x: 50 }}
-            animate={headerVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            animate={isMobile ? { opacity: 1, x: 0 } : (headerVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 })}
+            transition={isMobile ? { duration: 0 } : { duration: 0.8, delay: 0.3 }}
           >
             <div className="flex flex-wrap gap-3 mb-8">
               {filters.map((filter, index) => (
@@ -80,11 +92,11 @@ const SelectedWork = () => {
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={headerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  animate={isMobile ? { opacity: 1, y: 0 } : (headerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 })}
+                  transition={isMobile ? { duration: 0 } : { duration: 0.5, delay: 0.5 + index * 0.1 }}
+                  whileHover={isMobile ? {} : { scale: 1.05 }}
+                  whileTap={isMobile ? {} : { scale: 0.95 }}
                 >
                   {filter}
                 </motion.button>
@@ -93,44 +105,45 @@ const SelectedWork = () => {
           </motion.div>
         </motion.div>
 
-        {/* Projects Grid */}
-        <div ref={projectsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Projects Grid - Minimalist Design */}
+        <div ref={projectsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredProjects.map((project, index) => (
             <motion.div 
               key={project.id}
               data-index={index}
               className="group cursor-pointer"
-              initial={{ opacity: 0, y: 60 }}
-              animate={visibleProjects.has(index) ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-              transition={{ 
-                duration: 0.8, 
+              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+              animate={isMobile ? { opacity: 1, y: 0 } : (visibleProjects.has(index) ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 })}
+              transition={isMobile ? { duration: 0 } : { 
+                duration: 0.6, 
                 ease: "easeOut",
                 delay: index * 0.1 
               }}
-              whileHover={{ y: -5 }}
+              whileHover={isMobile ? {} : { y: -2 }}
               onClick={() => handleProjectClick(project.href)}
             >
-              <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg">
+              <div className="bg-white rounded-lg overflow-hidden border border-gray-100 hover:border-gray-200 transition-all duration-200 hover:shadow-sm">
+                {/* Smaller Image */}
                 <motion.div 
                   className="relative overflow-hidden"
-                  whileHover={{ scale: 1.01 }}
-                  transition={{ duration: 0.3 }}
+                  whileHover={isMobile ? {} : { scale: 1.02 }}
+                  transition={isMobile ? { duration: 0 } : { duration: 0.2 }}
                 >
-                  <div className="aspect-[16/10] relative">
+                  <div className="aspect-[4/3] relative">
                     <img 
                       src={project.image} 
                       alt={project.title}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                      className="w-full h-full object-cover transition-all duration-300"
                     />
-                    {/* Subtle hover overlay */}
-                    <div className="absolute inset-0 bg-gray-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    {/* Minimalist hover overlay */}
+                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                       <motion.div 
-                        className="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg"
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        whileHover={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.2 }}
+                        className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-sm"
+                        initial={isMobile ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
+                        whileHover={isMobile ? {} : { scale: 1, opacity: 1 }}
+                        transition={isMobile ? { duration: 0 } : { duration: 0.15 }}
                       >
-                        <svg className="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </motion.div>
@@ -138,55 +151,53 @@ const SelectedWork = () => {
                   </div>
                 </motion.div>
                 
+                {/* Compact Content */}
                 <motion.div 
-                  className="p-6"
-                  initial={{ opacity: 0 }}
-                  animate={visibleProjects.has(index) ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 + 0.3 }}
+                  className="p-4"
+                  initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
+                  animate={isMobile ? { opacity: 1 } : (visibleProjects.has(index) ? { opacity: 1 } : { opacity: 0 })}
+                  transition={isMobile ? { duration: 0 } : { duration: 0.4, delay: index * 0.1 + 0.2 }}
                 >
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-gray-700 transition-colors duration-300">
-                        {project.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm">
-                        {project.description}
-                      </p>
-                    </div>
-                    <span className="text-gray-400 text-xs font-medium ml-4 flex-shrink-0 bg-gray-100 px-2 py-1 rounded">
-                      {project.year}
-                    </span>
+                  {/* Title and Year */}
+                  <div className="mb-2">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-gray-700 transition-colors duration-200">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      {project.description}
+                    </p>
                   </div>
                   
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  {/* Tags - More compact */}
+                  <div className="flex flex-wrap gap-1 mb-3">
                     {project.category.map((cat, catIndex) => (
                       <motion.span 
                         key={cat}
-                        className="px-3 py-1 text-xs font-medium rounded border border-gray-200 text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors duration-300"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={visibleProjects.has(index) ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.4, delay: index * 0.1 + 0.4 + catIndex * 0.1 }}
-                        whileHover={{ scale: 1.02 }}
+                        className="px-2 py-1 text-xs font-medium rounded-md bg-gray-50 text-gray-600 border border-gray-100"
+                        initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                        animate={isMobile ? { opacity: 1, scale: 1 } : (visibleProjects.has(index) ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 })}
+                        transition={isMobile ? { duration: 0 } : { duration: 0.3, delay: index * 0.1 + 0.3 + catIndex * 0.05 }}
                       >
                         {cat}
                       </motion.span>
                     ))}
                   </div>
 
-                  {/* Project link indicator */}
-                  <div className="flex items-center mt-4 text-gray-800 group-hover:text-gray-900 transition-colors duration-300">
-                    <span className="text-xs font-medium uppercase tracking-wide">View Project</span>
-                    <motion.svg 
-                      className="w-3 h-3 ml-2" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                      animate={{ x: 0 }}
-                      whileHover={{ x: 3 }}
-                      transition={{ duration: 0.2 }}
+                  {/* Year and Link */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400 font-medium">
+                      {project.year}
+                    </span>
+                    <motion.div 
+                      className="flex items-center text-gray-500 group-hover:text-gray-700 transition-colors duration-200"
+                      whileHover={isMobile ? {} : { x: 2 }}
+                      transition={isMobile ? { duration: 0 } : { duration: 0.15 }}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </motion.svg>
+                      <span className="text-xs font-medium">View</span>
+                      <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </motion.div>
                   </div>
                 </motion.div>
               </div>

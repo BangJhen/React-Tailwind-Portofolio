@@ -101,7 +101,6 @@ const About = () => {
         {/* Floating geometric shapes */}
         <div className="absolute top-1/4 right-1/4 w-4 h-4 bg-purple-400/20 rounded-full animate-bounce delay-200"></div>
         <div className="absolute bottom-1/3 left-1/3 w-3 h-3 bg-blue-400/30 rounded-sm transform rotate-45 animate-pulse delay-700"></div>
-        <div className="absolute top-3/4 right-1/3 w-2 h-8 bg-gradient-to-b from-indigo-400/20 to-purple-400/20 rounded-full animate-pulse delay-1200"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -256,13 +255,6 @@ const About = () => {
                         <h4 className="text-base font-semibold text-gray-800 group-hover:text-gray-900 transition-colors duration-300">
                           {skill.name}
                         </h4>
-                        <motion.div 
-                          className={`h-1 bg-gradient-to-r ${skill.color} rounded-full mt-2 ${selectedSkill === skill ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} transition-opacity duration-300`}
-                          initial={{ scaleX: 0 }}
-                          animate={{ scaleX: selectedSkill === skill ? 1 : 0 }}
-                          whileHover={{ scaleX: 1 }}
-                          transition={{ duration: 0.5 }}
-                        />
                       </div>
                       
                       {/* Enhanced Arrow Icon */}

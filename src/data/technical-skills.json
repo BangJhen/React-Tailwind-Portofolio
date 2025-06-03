@@ -41,22 +41,82 @@
       ]
     },
     {
-      "name": "Troubleshooting",
-      "icon": "🔧",
-      "color": "from-green-500 to-blue-500",
-      "summary": "Systematic problem-solving approach to identify, analyze, and resolve technical issues across different systems and platforms. Strong analytical skills for debugging complex software and hardware problems.",
+      "name": "Data Science",
+      "icon": "📊",
+      "color": "from-green-500 to-blue-600",
+      "summary": "Comprehensive data science expertise spanning from data acquisition to advanced analytics. Strong research methodologies with practical experience in competitive data science environments and real-world forecasting applications.",
       "sections": [
         {
-          "title": "System Debugging",
-          "description": "Experienced in diagnosing and resolving system-level issues, including performance bottlenecks, memory leaks, and configuration problems across various operating systems and environments."
+          "title": "Forecasting Specialist",
+          "description": "Deep expertise in predictive modeling and time-series analysis. Specialized in economic forecasting, particularly in commodity price prediction with integration of exogenous features for enhanced model accuracy and reliability."
         },
         {
-          "title": "Code Debugging",
-          "description": "Proficient in using debugging tools, log analysis, and systematic testing approaches to identify and fix software bugs. Experience with various debugging techniques and error tracking systems."
+          "title": "Web Scraping & Data Acquisition",
+          "description": "Skilled in automated data collection and web crawling techniques. Proficient in extracting structured data from various sources, handling different data formats, and building robust data pipelines for continuous data ingestion."
         },
         {
-          "title": "Network & Infrastructure",
-          "description": "Skilled in troubleshooting network connectivity issues, server configurations, and deployment problems. Experience with monitoring tools and proactive issue prevention strategies."
+          "title": "Research Methodology",
+          "description": "Strong foundation in research design, hypothesis testing, and statistical analysis. Experience in academic and competitive research environments with focus on reproducible results and methodological rigor."
+        }
+      ]
+    },
+    {
+      "name": "Network Engineering",
+      "icon": "🔗",
+      "color": "from-orange-500 to-red-600",
+      "summary": "Certified network professional with expertise in enterprise networking solutions. Specialized in MikroTik technologies with national-level competition experience and industry-recognized certifications.",
+      "sections": [
+        {
+          "title": "MikroTik Certified Engineer (MTCRE)",
+          "description": "Advanced certification in routing and network engineering. Capable of designing, implementing, and troubleshooting complex network infrastructures using MikroTik RouterOS and hardware solutions."
+        },
+        {
+          "title": "Network Associate (MTCNA)",
+          "description": "Foundational expertise in network administration and configuration. Proficient in basic to intermediate networking concepts, routing protocols, and network security implementations using MikroTik systems."
+        },
+        {
+          "title": "Competition Experience",
+          "description": "National finalist in Olimpiade Jaringan Mikrotik 2023, demonstrating practical networking skills under competitive conditions. Experience in network design challenges and real-world problem-solving scenarios."
+        }
+      ]
+    },
+    {
+      "name": "Leadership & Communication",
+      "icon": "👥",
+      "color": "from-yellow-500 to-orange-600",
+      "summary": "Strong interpersonal and leadership skills with experience in team management and public presentation. Capable of translating technical concepts into business value and leading cross-functional projects.",
+      "sections": [
+        {
+          "title": "Team Leadership",
+          "description": "Experienced in leading technical teams and collaborative projects. Skilled in coordinating diverse skill sets, managing project timelines, and ensuring effective communication across different stakeholders and technical domains."
+        },
+        {
+          "title": "Public Speaking",
+          "description": "Confident presenter capable of delivering technical content to diverse audiences. Experience in explaining complex data science concepts, presenting research findings, and communicating project results to both technical and non-technical stakeholders."
+        },
+        {
+          "title": "Business Planning",
+          "description": "Skilled in creating comprehensive business plans and pitch decks. Ability to bridge technical solutions with business requirements, identify market opportunities, and present compelling value propositions to stakeholders."
+        }
+      ]
+    },
+    {
+      "name": "Emerging Technologies",
+      "icon": "⚡",
+      "color": "from-indigo-500 to-purple-600",
+      "summary": "Continuously adapting to cutting-edge technologies with focus on AI engineering and prompt optimization. Stays current with latest developments in machine learning, natural language processing, and AI-assisted development workflows.",
+      "sections": [
+        {
+          "title": "Prompt Engineering",
+          "description": "Skilled in designing effective prompts for large language models and AI systems. Understanding of prompt optimization techniques, context management, and leveraging AI tools for enhanced productivity and problem-solving."
+        },
+        {
+          "title": "AI Integration",
+          "description": "Experience in integrating AI capabilities into existing workflows and applications. Focus on practical implementations of machine learning models in production environments and AI-assisted development processes."
+        },
+        {
+          "title": "Technology Adaptation",
+          "description": "Quick learner with demonstrated ability to master new technologies and frameworks. Maintains awareness of industry trends and emerging tools in data science, web development, and AI engineering domains."
         }
       ]
     }
