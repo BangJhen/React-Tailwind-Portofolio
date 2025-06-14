@@ -147,16 +147,14 @@ const Header = () => {
                     </motion.span>
                     <span className="relative z-10">{item.name}</span>
                     
-                    {/* Underline Effect */}
-                    <motion.div
-                      className={`absolute bottom-0 left-0 h-0.5 rounded-full ${
-                        activeSection === item.id 
-                          ? 'bg-blue-500 w-full' 
-                          : 'bg-gradient-to-r from-blue-500 to-purple-600 w-0 group-hover:w-full'
-                      }`}
-                      initial={{ width: activeSection === item.id ? '100%' : '0%' }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                    />
+                    {/* Underline Effect - Only for non-active items on hover */}
+                    {activeSection !== item.id && (
+                      <motion.div
+                        className="absolute bottom-0 left-0 h-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 w-0 group-hover:w-full"
+                        initial={{ width: '0%' }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      />
+                    )}
                     
                     {/* Active Section Checkpoint Indicator */}
                     <AnimatePresence>
