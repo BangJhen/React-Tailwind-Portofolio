@@ -8,7 +8,97 @@
 }
 
 html {
+  html {
   scroll-behavior: smooth;
+}
+
+/* Performance optimizations for 3D animations */
+.skill-card {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+  min-height: 128px; /* Mobile size - two column layout */
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fast hover effects for skill cards */
+.skill-card:hover {
+  transform: translateZ(0); /* Force hardware acceleration */
+  filter: brightness(1.05) saturate(1.05);
+  transition: all 0.1s ease-out;
+}
+
+/* Enhanced text wrapping for skill card titles */
+.skill-card h4 {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
+/* Larger cards for desktop/laptop with enhanced effects */
+@media (min-width: 1024px) {
+  .skill-card {
+    min-height: 144px; /* Desktop size - two column layout */
+  }
+}
+
+/* Creative hover effects */
+.skill-card:hover {
+  transform: translateZ(0); /* Force hardware acceleration */
+  filter: brightness(1.05) saturate(1.1);
+}
+
+/* Smooth transitions for skill cards */
+.skill-card:hover {
+  transform: translateZ(0); /* Force hardware acceleration */
+}
+
+/* Line clamp utilities for text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Better scrollbar styling */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 body {
@@ -782,6 +872,27 @@ body {
   left: 100%;
 }
 
+/* Performance optimizations for 3D animations */
+.skill-card {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Smooth transitions for skill cards */
+.skill-card:hover {
+  transform: translateZ(0); /* Force hardware acceleration */
+}
+
+/* Line clamp utility for consistent text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Smooth scrollbar for modal */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
@@ -900,4 +1011,5 @@ body {
   100% {
     background-position: 0% 50%;
   }
+}
 }
