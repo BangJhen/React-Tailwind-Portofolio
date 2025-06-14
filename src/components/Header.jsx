@@ -128,7 +128,7 @@ const Header = () => {
                         ? 'text-blue-600 bg-blue-50 shadow-sm' 
                         : 'text-gray-700 hover:text-blue-600'
                     }`}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ y: -1 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <motion.span 
@@ -147,36 +147,22 @@ const Header = () => {
                     </motion.span>
                     <span className="relative z-10">{item.name}</span>
                     
-                    {/* Hover Background */}
+                    {/* Underline Effect */}
                     <motion.div
-                      className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-100"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileHover={{ scale: 1, opacity: 0.1 }}
-                      transition={{ duration: 0.2 }}
+                      className={`absolute bottom-0 left-0 h-0.5 rounded-full ${
+                        activeSection === item.id 
+                          ? 'bg-blue-500 w-full' 
+                          : 'bg-gradient-to-r from-blue-500 to-purple-600 w-0 group-hover:w-full'
+                      }`}
+                      initial={{ width: activeSection === item.id ? '100%' : '0%' }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                     />
-                    
-                    {/* Active Indicator */}
-                    <AnimatePresence>
-                      {(hoveredItem === item.name || activeSection === item.id) && (
-                        <motion.div
-                          className={`absolute -bottom-1 left-1/2 w-6 h-0.5 rounded-full ${
-                            activeSection === item.id 
-                              ? 'bg-blue-500' 
-                              : 'bg-gradient-to-r from-blue-500 to-purple-600'
-                          }`}
-                          initial={{ scale: 0, x: '-50%' }}
-                          animate={{ scale: 1, x: '-50%' }}
-                          exit={{ scale: 0, x: '-50%' }}
-                          transition={{ duration: 0.2 }}
-                        />
-                      )}
-                    </AnimatePresence>
                     
                     {/* Active Section Checkpoint Indicator */}
                     <AnimatePresence>
                       {activeSection === item.id && (
                         <motion.div
-                          className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full border border-white"
+                          className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full border border-white shadow-sm"
                           initial={{ scale: 0, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           exit={{ scale: 0, opacity: 0 }}
