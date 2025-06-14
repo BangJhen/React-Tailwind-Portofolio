@@ -1,10 +1,126 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
+import { useState, useRef } from 'react'
+import emailjs from '@emailjs/browser'
 import { useScrollTrigger } from '../hooks/useAnimations'
 
 const Contact = () => {
   const [contactRef, contactVisible] = useScrollTrigger(0.2)
+  const form = useRef()
   
+  // Form state management
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    message: ''
+  })
+  
+  // UI state management
+  const [isLoading, setIsLoading] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState(null) // 'success', 'error', or null
+  const [errors, setErrors] = useState({})
+
+  // Email validation regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  // Form validation function
+  const validateForm = () => {
+    const newErrors = {}
+    
+    // Check required fields
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = 'Full name is required'
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email address is required'
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address'
+    }
+    
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone number is required'
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required'
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }))
+    }
+  }
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    // Validate form before submission
+    if (!validateForm()) {
+      return
+    }
+    
+    setIsLoading(true)
+    setSubmitStatus(null)
+    
+    try {
+      // Debug: Log environment variables
+      console.log('EmailJS Config:', {
+        serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      })
+      
+      // EmailJS configuration using environment variables
+      const result = await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        form.current,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      )
+      
+      console.log('Email sent successfully:', result.text)
+      setSubmitStatus('success')
+      
+      // Reset form on success
+      setFormData({
+        fullName: '',
+        email: '',
+        phone: '',
+        message: ''
+      })
+      
+    } catch (error) {
+      console.error('Failed to send email:', error)
+      console.error('Error details:', {
+        status: error.status,
+        text: error.text,
+        message: error.message
+      })
+      setSubmitStatus('error')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -40,8 +156,21 @@ const Contact = () => {
     }
   }
 
+  const formVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.7,
+        ease: "easeOut",
+        delay: 0.3
+      }
+    }
+  }
+
   return (
-    <section id="contact" className="py-20 bg-gray-50">
+    <section id="contact" className="py-20 bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <motion.div
@@ -55,121 +184,370 @@ const Contact = () => {
             variants={itemVariants}
             className="text-blue-500 font-medium text-lg mb-4"
           >
-            Contact us
+            Contact Me
           </motion.p>
           <motion.h2 
             variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-6 leading-tight px-4"
           >
-            Get in touch
+            Let's Work Together
           </motion.h2>
           <motion.p 
             variants={itemVariants}
             className="text-xl text-gray-600 max-w-2xl mx-auto"
           >
-            Our friendly team is always here to chat.
+            Have a project in mind? I'd love to hear about it. Send me a message and let's discuss how we can bring your ideas to life.
           </motion.p>
         </motion.div>
 
-        {/* Contact Cards */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          animate={contactVisible ? "visible" : "hidden"}
-        >
-          {/* Email Card */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Left Column - Social Media and Contact Information */}
           <motion.div 
-            variants={cardVariants}
-            className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group"
-            whileHover={{ 
-              y: -5,
-              transition: { duration: 0.3 }
-            }}
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate={contactVisible ? "visible" : "hidden"}
           >
+            {/* Social Media Links - Enhanced */}
             <motion.div 
-              className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors duration-300"
-              whileHover={{ 
-                scale: 1.1,
-                transition: { duration: 0.3 }
-              }}
+              variants={cardVariants}
+              className="bg-gradient-to-br from-white via-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100"
             >
-              <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 7.89a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
+              <div className="text-center mb-8">
+                <motion.div
+                  className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4"
+                >
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                  </svg>
+                </motion.div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Let's Connect!</h3>
+                <p className="text-gray-600 text-base">Follow me on social media for updates and insights</p>
+              </div>
+              
+              <div className="grid grid-cols-1 gap-4">
+                {/* Bento.me */}
+                <motion.a
+                  href="https://bento.me/ammar-ridho"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-orange-400 hover:bg-gradient-to-r hover:from-orange-400 hover:to-yellow-400 group transition-all duration-300 shadow-sm hover:shadow-md"
+                  whileHover={{ 
+                    x: 5,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-4">
+                    <svg className="w-6 h-6 text-orange-600 group-hover:text-orange-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 group-hover:text-white transition-colors duration-300">Bento.me</h4>
+                    <p className="text-sm text-gray-600 group-hover:text-orange-100 transition-colors duration-300">All my links in one place</p>
+                  </div>
+                  <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </motion.a>
+
+                {/* GitHub */}
+                <motion.a
+                  href="https://github.com/BangJhen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-900 hover:bg-gray-900 group transition-all duration-300 shadow-sm hover:shadow-md"
+                  whileHover={{ 
+                    x: 5,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-4">
+                    <svg className="w-6 h-6 text-gray-700 group-hover:text-gray-900 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 group-hover:text-white transition-colors duration-300">GitHub</h4>
+                    <p className="text-sm text-gray-600 group-hover:text-gray-300 transition-colors duration-300">Check out my code repositories</p>
+                  </div>
+                  <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </motion.a>
+
+                {/* LinkedIn */}
+                <motion.a
+                  href="https://www.linkedin.com/in/ammar-ridho"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-600 hover:bg-blue-600 group transition-all duration-300 shadow-sm hover:shadow-md"
+                  whileHover={{ 
+                    x: 5,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-4">
+                    <svg className="w-6 h-6 text-blue-600 group-hover:text-blue-600 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 group-hover:text-white transition-colors duration-300">LinkedIn</h4>
+                    <p className="text-sm text-gray-600 group-hover:text-blue-100 transition-colors duration-300">Let's connect professionally</p>
+                  </div>
+                  <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </motion.a>
+
+                {/* Instagram */}
+                <motion.a
+                  href="https://www.instagram.com/ammarridhojr/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-pink-400 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 group transition-all duration-300 shadow-sm hover:shadow-md"
+                  whileHover={{ 
+                    x: 5,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-4">
+                    <svg className="w-6 h-6 text-purple-600 group-hover:text-purple-600 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 group-hover:text-white transition-colors duration-300">Instagram</h4>
+                    <p className="text-sm text-gray-600 group-hover:text-pink-100 transition-colors duration-300">Follow my creative journey</p>
+                  </div>
+                  <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </motion.a>
+              </div>
             </motion.div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Email</h3>
-            <p className="text-gray-600 mb-6">Our friendly team is here to help.</p>
-            <motion.a 
-              href="mailto:jhenerar21@gmail.com"
-              className="text-blue-500 hover:text-blue-600 font-medium text-lg transition-colors duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              jhenerar21@gmail.com
-            </motion.a>
           </motion.div>
 
-          {/* Office Card */}
-          <motion.div 
-            variants={cardVariants}
-            className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group"
-            whileHover={{ 
-              y: -5,
-              transition: { duration: 0.3 }
-            }}
+          {/* Contact Form */}
+          <motion.div
+            variants={formVariants}
+            initial="hidden"
+            animate={contactVisible ? "visible" : "hidden"}
+            className="bg-white rounded-3xl p-8 shadow-xl border border-white/20"
           >
-            <motion.div 
-              className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors duration-300"
-              whileHover={{ 
-                scale: 1.1,
-                transition: { duration: 0.3 }
-              }}
-            >
-              <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            </motion.div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Place</h3>
-            <p className="text-gray-600 mb-6">Come say hello at my place.</p>
-            <p className="text-blue-500 font-medium text-lg">
-              Telkom University, Bandung Regency, West Java
-            </p>
-          </motion.div>
+            <div className="mb-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                Send me a message
+              </h3>
+              <p className="text-gray-600">
+                Fill out the form below and I'll get back to you as soon as possible.
+              </p>
+            </div>
 
-          {/* Phone Card */}
-          <motion.div 
-            variants={cardVariants}
-            className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group"
-            whileHover={{ 
-              y: -5,
-              transition: { duration: 0.3 }
-            }}
-          >
-            <motion.div 
-              className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors duration-300"
-              whileHover={{ 
-                scale: 1.1,
-                transition: { duration: 0.3 }
-              }}
-            >
-              <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-            </motion.div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Phone</h3>
-            <p className="text-gray-600 mb-6">Mon-Fri from 8am to 5pm.</p>
-            <motion.a 
-              href="mailto:jhenerar21@gmail.com"
-              className="text-blue-500 hover:text-blue-600 font-medium text-lg transition-colors duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Email for scheduling
-            </motion.a>
+            {/* Success/Error Messages */}
+            {submitStatus === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg"
+              >
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <p className="text-green-700 font-medium">
+                    Message sent successfully! I'll get back to you soon.
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
+            {submitStatus === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg"
+              >
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  <p className="text-red-700 font-medium">
+                    Failed to send message. Please try again or email me directly.
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Contact Form */}
+            <form ref={form} onSubmit={handleSubmit} className="space-y-6">
+              {/* Hidden fields for EmailJS compatibility */}
+              <input type="hidden" name="from_name" value={formData.fullName} />
+              <input type="hidden" name="from_email" value={formData.email} />
+              <input type="hidden" name="reply_to" value={formData.email} />
+              
+              {/* Full Name Field */}
+              <div>
+                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ${
+                    errors.fullName 
+                      ? 'border-red-500 bg-red-50' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  placeholder="Enter your full name"
+                />
+                {errors.fullName && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-1 text-sm text-red-600"
+                  >
+                    {errors.fullName}
+                  </motion.p>
+                )}
+              </div>
+
+              {/* Email Field */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ${
+                    errors.email 
+                      ? 'border-red-500 bg-red-50' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  placeholder="Enter your email address"
+                />
+                {errors.email && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-1 text-sm text-red-600"
+                  >
+                    {errors.email}
+                  </motion.p>
+                )}
+              </div>
+
+              {/* Phone Number Field */}
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 ${
+                    errors.phone 
+                      ? 'border-red-500 bg-red-50' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  placeholder="Enter your phone number"
+                />
+                {errors.phone && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-1 text-sm text-red-600"
+                  >
+                    {errors.phone}
+                  </motion.p>
+                )}
+              </div>
+
+              {/* Message Field */}
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                  Message *
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  rows={5}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-vertical ${
+                    errors.message 
+                      ? 'border-red-500 bg-red-50' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  placeholder="Tell me about your project or message..."
+                />
+                {errors.message && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-1 text-sm text-red-600"
+                  >
+                    {errors.message}
+                  </motion.p>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <motion.button
+                type="submit"
+                disabled={isLoading}
+                className={`w-full py-4 px-6 rounded-lg font-semibold text-white transition-all duration-300 ${
+                  isLoading
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-[1.02] active:scale-[0.98]'
+                } shadow-lg hover:shadow-xl`}
+                whileHover={!isLoading ? { 
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
+                } : {}}
+                whileTap={!isLoading ? { scale: 0.98 } : {}}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending Message...
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <span>Send Message</span>
+                    <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                  </div>
+                )}
+              </motion.button>
+            </form>
+
+            {/* Additional Info */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <p className="text-sm text-gray-500 text-center">
+                All fields marked with * are required. Your information will be kept confidential.
+              </p>
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )
