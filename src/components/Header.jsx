@@ -36,6 +36,21 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Smooth scroll function
+  const scrollToSection = (sectionId, event) => {
+    event.preventDefault()
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const headerHeight = 80 // Account for fixed header
+      const elementPosition = element.offsetTop - headerHeight
+      
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      })
+    }
+  }
+
   const navItems = [
     { name: 'Home', href: '#home', icon: '🏠', id: 'home' },
     { name: 'About', href: '#about', icon: '👤', id: 'about' },
@@ -64,22 +79,69 @@ const Header = () => {
             whileTap={{ scale: 0.98 }}
           >
             <motion.div 
-              className="relative header-profile-glow"
+              className="relative"
             >
-              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gradient-to-r from-blue-500 to-purple-600 p-0.5">
-                <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                  <img 
-                    src="/photo_profile.png" 
-                    alt="Ammar Ridho"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      console.log('Image failed to load from Google Drive, falling back to local');
-                      e.target.src = "/photo_profile.png";
-                    }}
-                    onLoad={() => console.log('Google Drive image loaded successfully')}
+              {/* Low Poly Logo */}
+              <div className="w-10 h-10 relative">
+                <svg 
+                  width="40" 
+                  height="40" 
+                  viewBox="0 0 40 40" 
+                  className="w-full h-full"
+                >
+                  {/* Low Poly Geometric Design */}
+                  <defs>
+                    <linearGradient id="poly-gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="100%" stopColor="#8B5CF6" />
+                    </linearGradient>
+                    <linearGradient id="poly-gradient-2" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#06B6D4" />
+                      <stop offset="100%" stopColor="#3B82F6" />
+                    </linearGradient>
+                    <linearGradient id="poly-gradient-3" x1="50%" y1="0%" x2="50%" y2="100%">
+                      <stop offset="0%" stopColor="#8B5CF6" />
+                      <stop offset="100%" stopColor="#EC4899" />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Low Poly Triangles */}
+                  <polygon 
+                    points="20,2 35,15 20,20" 
+                    fill="url(#poly-gradient-1)"
+                    className="transition-all duration-300 group-hover:opacity-90"
                   />
-                </div>
+                  <polygon 
+                    points="20,2 5,15 20,20" 
+                    fill="url(#poly-gradient-2)"
+                    className="transition-all duration-300 group-hover:opacity-90"
+                  />
+                  <polygon 
+                    points="5,15 20,20 10,30" 
+                    fill="url(#poly-gradient-3)"
+                    className="transition-all duration-300 group-hover:opacity-90"
+                  />
+                  <polygon 
+                    points="20,20 35,15 30,30" 
+                    fill="url(#poly-gradient-1)"
+                    className="transition-all duration-300 group-hover:opacity-80"
+                  />
+                  <polygon 
+                    points="10,30 20,20 30,30" 
+                    fill="url(#poly-gradient-2)"
+                    className="transition-all duration-300 group-hover:opacity-90"
+                  />
+                  <polygon 
+                    points="10,30 20,38 30,30" 
+                    fill="url(#poly-gradient-3)"
+                    className="transition-all duration-300 group-hover:opacity-85"
+                  />
+                </svg>
+                
+                {/* Glow Effect */}
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 opacity-20 blur-sm group-hover:opacity-30 transition-opacity duration-300"></div>
               </div>
+              
               <motion.div 
                 className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white status-pulse"
                 animate={{ scale: [1, 1.2, 1] }}
@@ -123,6 +185,7 @@ const Header = () => {
                 >
                   <motion.a
                     href={item.href}
+                    onClick={(e) => scrollToSection(item.id, e)}
                     className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 group ${
                       activeSection === item.id 
                         ? 'text-blue-600 bg-blue-50 shadow-sm' 
@@ -230,7 +293,10 @@ const Header = () => {
                       ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-500'
                       : 'text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-700'
                   }`}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(e) => {
+                    scrollToSection(item.id, e)
+                    setIsMenuOpen(false)
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}

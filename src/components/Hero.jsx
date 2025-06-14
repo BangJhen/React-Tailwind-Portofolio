@@ -57,7 +57,113 @@ const Hero = () => {
 
   return (
     <section id="home" className="pt-16 min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden">
-      {/* Parallax Background Elements */}
+      {/* Low Poly Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Low Poly Geometric Shapes */}
+        <svg className="absolute top-0 left-0 w-full h-full opacity-20" viewBox="0 0 1200 800">
+          <defs>
+            <linearGradient id="poly-bg-1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.1" />
+            </linearGradient>
+            <linearGradient id="poly-bg-2" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.1" />
+            </linearGradient>
+            <linearGradient id="poly-bg-3" x1="50%" y1="0%" x2="50%" y2="100%">
+              <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#EC4899" stopOpacity="0.1" />
+            </linearGradient>
+          </defs>
+          
+          {/* Large Low Poly Triangles */}
+          <polygon points="0,0 300,200 0,400" fill="url(#poly-bg-1)" />
+          <polygon points="1200,0 900,300 1200,600" fill="url(#poly-bg-2)" />
+          <polygon points="400,0 700,150 500,400" fill="url(#poly-bg-3)" />
+          <polygon points="600,400 1000,500 800,800" fill="url(#poly-bg-1)" />
+          <polygon points="0,500 400,600 200,800" fill="url(#poly-bg-2)" />
+          <polygon points="300,100 600,50 450,350" fill="url(#poly-bg-3)" />
+        </svg>
+        
+        {/* Floating Low Poly Elements */}
+        <div className="absolute top-20 left-20">
+          <motion.svg 
+            width="100" 
+            height="100" 
+            viewBox="0 0 100 100"
+            animate={{ 
+              rotate: [0, 360],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ 
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          >
+            <polygon points="50,10 80,40 50,70 20,40" fill="url(#poly-bg-1)" />
+          </motion.svg>
+        </div>
+        
+        <div className="absolute top-40 right-32">
+          <motion.svg 
+            width="80" 
+            height="80" 
+            viewBox="0 0 80 80"
+            animate={{ 
+              rotate: [360, 0],
+              y: [-10, 10, -10]
+            }}
+            transition={{ 
+              duration: 12,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <polygon points="40,5 70,25 60,55 20,55 10,25" fill="url(#poly-bg-2)" />
+          </motion.svg>
+        </div>
+        
+        <div className="absolute bottom-32 left-40">
+          <motion.svg 
+            width="120" 
+            height="120" 
+            viewBox="0 0 120 120"
+            animate={{ 
+              rotate: [0, -360],
+              scale: [1, 0.9, 1]
+            }}
+            transition={{ 
+              duration: 18,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          >
+            <polygon points="60,10 100,35 85,75 35,75 20,35" fill="url(#poly-bg-3)" />
+          </motion.svg>
+        </div>
+        
+        <div className="absolute top-60 left-1/2">
+          <motion.svg 
+            width="60" 
+            height="60" 
+            viewBox="0 0 60 60"
+            animate={{ 
+              rotate: [0, 180, 360],
+              x: [-20, 20, -20]
+            }}
+            transition={{ 
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <polygon points="30,5 50,20 45,40 15,40 10,20" fill="url(#poly-bg-1)" />
+          </motion.svg>
+        </div>
+      </div>
+
+      {/* Original Parallax Background Elements */}
       <div 
         className="absolute inset-0 opacity-30"
         style={{ transform: `translateY(${scrollY * 0.5}px)` }}
