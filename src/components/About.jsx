@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, memo, useMemo } from "react"
 import { useScrollTrigger } from '../hooks/useAnimations'
 import { getAllSkills } from '../data/skillsUtils'
 
@@ -8,7 +8,10 @@ const About = () => {
   const [aboutRef, aboutVisible] = useScrollTrigger(0.3)
   const [skillsRef, skillsVisible] = useScrollTrigger(0.2)
   const [selectedSkill, setSelectedSkill] = useState(null)
-  const [skills] = useState(getAllSkills())
+  
+  // Memoize skills data to prevent unnecessary recalculations
+  const skills = useMemo(() => getAllSkills(), [])
+  
   const sectionRefs = useRef([])
   const skillTiltRefs = useRef([])
 
@@ -23,25 +26,6 @@ const About = () => {
       sectionRefs.current = new Array(selectedSkill.sections.length).fill(null)
     }
   }, [selectedSkill])
-
-  // Tilt effect functions
-  const HANDLE_TILT_CHANGE_OLD = (element, e) => {
-    if (!element) return
-    const rect = element.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const tiltX = (y - centerY) / 10
-    const tiltY = (centerX - x) / 10
-
-    element.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(10px)`
-  }
-
-  const RESET_TILT_OLD = (element) => {
-    if (!element) return
-    element.style.transform = 'translateZ(0)'
-  }
 
   // Scroll lock effect when modal is open
   useEffect(() => {
@@ -87,7 +71,7 @@ const About = () => {
     }
   }, [selectedSkill])
 
-  const containerVariants = {
+  const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -95,9 +79,9 @@ const About = () => {
         staggerChildren: 0.3
       }
     }
-  }
+  }), [])
 
-  const itemVariants = {
+  const itemVariants = useMemo(() => ({
     hidden: { opacity: 0, x: -50 },
     visible: {
       opacity: 1,
@@ -107,7 +91,7 @@ const About = () => {
         ease: "easeOut"
       }
     }
-  }
+  }), [])
 
   // Lightweight 3D tilt effect
   const handleTiltChange = (tiltRef, e) => {
@@ -649,4 +633,4 @@ const About = () => {
   )
 }
 
-export default About
+export default memo(About)

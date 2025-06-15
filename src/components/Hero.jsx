@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, memo } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
 import { useScrollAnimation } from '../hooks/useAnimations'
@@ -32,7 +32,7 @@ const Hero = () => {
     return () => window.removeEventListener('resize', checkScreenSize)
   }, [])
 
-  const containerVariants = {
+  const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -41,9 +41,9 @@ const Hero = () => {
         delayChildren: 0.2
       }
     }
-  }
+  }), [])
 
-  const itemVariants = {
+  const itemVariants = useMemo(() => ({
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
@@ -53,7 +53,12 @@ const Hero = () => {
         ease: "easeOut"
       }
     }
-  }
+  }), [])
+
+  // Memoize parallax transform to avoid recalculating on every render
+  const parallaxTransform = useMemo(() => 
+    `translateY(${scrollY * 0.5}px)`, [scrollY]
+  )
 
   return (
     <section id="home" className="pt-16 min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden">
@@ -166,7 +171,7 @@ const Hero = () => {
       {/* Original Parallax Background Elements */}
       <div 
         className="absolute inset-0 opacity-30"
-        style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+        style={{ transform: parallaxTransform }}
       >
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
@@ -395,6 +400,8 @@ const Hero = () => {
                   alt="Muhammad Ammar Ridho"
                   className="w-full h-full object-cover relative z-10"
                   style={{ objectPosition: '50% 20%' }}
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     console.log('Image failed to load');
                     e.target.style.display = 'none';
@@ -470,4 +477,4 @@ const Hero = () => {
   )
 }
 
-export default Hero
+export default memo(Hero)

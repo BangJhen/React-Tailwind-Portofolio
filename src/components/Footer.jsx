@@ -1,10 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
+import { memo, useMemo } from 'react'
 import { useScrollTrigger } from '../hooks/useAnimations'
 
 const Footer = () => {
   const [footerRef, footerVisible] = useScrollTrigger(0.2)
-  const currentYear = new Date().getFullYear()
+  
+  // Memoize current year to prevent recalculation
+  const currentYear = useMemo(() => new Date().getFullYear(), [])
 
   return (
     <motion.footer 
@@ -68,4 +71,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default memo(Footer)

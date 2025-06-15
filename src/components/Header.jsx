@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo, useMemo } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "motion/react"
 
@@ -36,8 +36,8 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Smooth scroll function
-  const scrollToSection = (sectionId, event) => {
+  // Memoize scroll function to prevent recreation
+  const scrollToSection = useMemo(() => (sectionId, event) => {
     event.preventDefault()
     const element = document.getElementById(sectionId)
     if (element) {
@@ -49,14 +49,15 @@ const Header = () => {
         behavior: 'smooth'
       })
     }
-  }
+  }, [])
 
-  const navItems = [
+  // Memoize navigation items to prevent recreation
+  const navItems = useMemo(() => [
     { name: 'Home', href: '#home', icon: '🏠', id: 'home' },
     { name: 'About', href: '#about', icon: '👤', id: 'about' },
     { name: 'Work', href: '#work', icon: '💼', id: 'work' },
     { name: 'Contact', href: '#contact', icon: '📧', id: 'contact' }
-  ]
+  ], [])
 
   return (
     <motion.nav 
@@ -353,4 +354,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default memo(Header)

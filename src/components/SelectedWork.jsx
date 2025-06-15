@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo, useMemo } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
 import { useScrollTrigger, useStaggerAnimation } from '../hooks/useAnimations'
+import LazyImage from './LazyImage'
 
 const SelectedWork = () => {
   const [activeFilter, setActiveFilter] = useState('All')
@@ -20,7 +21,8 @@ const SelectedWork = () => {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
   
-  const projects = [
+  // Memoize projects data to prevent recreation
+  const projects = useMemo(() => [
     {
       id: 1,
       title: "Sentiment Analysis With Qwen2.5 Evaluation",
@@ -30,19 +32,24 @@ const SelectedWork = () => {
       description: "AI-powered sentiment analysis tool",
       href:"https://sentiment-analysis-with-qwen.streamlit.app"
     }
-  ]
+  ], [])
 
 //   const filters = ['All', 'MACHINE LEARNING', 'WEB DEV', 'COMPUTER VISION']
-  const filters = []
+  // Memoize filters array
+  const filters = useMemo(() => [], [])
 
+  // Memoize filtered projects to avoid recalculation on every render
+  const filteredProjects = useMemo(() => 
+    activeFilter === 'All' 
+      ? projects 
+      : projects.filter(project => project.category.includes(activeFilter)),
+    [activeFilter, projects]
+  )
 
-  const filteredProjects = activeFilter === 'All' 
-    ? projects 
-    : projects.filter(project => project.category.includes(activeFilter))
-
-  const handleProjectClick = (href) => {
+  // Memoize click handler to prevent recreation
+  const handleProjectClick = useMemo(() => (href) => {
     window.open(href, '_blank', 'noopener,noreferrer')
-  }
+  }, [])
 
   return (
     <section id="work" className="py-20 bg-white">
@@ -130,10 +137,11 @@ const SelectedWork = () => {
                   transition={isMobile ? { duration: 0 } : { duration: 0.2 }}
                 >
                   <div className="aspect-[4/3] relative">
-                    <img 
+                    <LazyImage
                       src={project.image} 
                       alt={project.title}
-                      className="w-full h-full object-cover transition-all duration-300"
+                      className="absolute inset-0"
+                      style={{ width: '100%', height: '100%' }}
                     />
                     {/* Minimalist hover overlay */}
                     <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
@@ -209,4 +217,4 @@ const SelectedWork = () => {
   )
 }
 
-export default SelectedWork
+export default memo(SelectedWork)

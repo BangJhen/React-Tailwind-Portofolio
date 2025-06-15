@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react"
-import { useState, useRef } from 'react'
+import { useState, useRef, memo, useMemo } from 'react'
 import emailjs from '@emailjs/browser'
 import { useScrollTrigger } from '../hooks/useAnimations'
 
@@ -21,11 +21,11 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState(null) // 'success', 'error', or null
   const [errors, setErrors] = useState({})
 
-  // Email validation regex
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  // Memoize email validation regex to prevent recreation
+  const emailRegex = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
 
-  // Form validation function
-  const validateForm = () => {
+  // Memoize form validation function
+  const validateForm = useMemo(() => () => {
     const newErrors = {}
     
     // Check required fields
@@ -49,10 +49,10 @@ const Contact = () => {
     
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }
+  }, [formData, emailRegex])
 
-  // Handle input changes
-  const handleInputChange = (e) => {
+  // Memoize input change handler
+  const handleInputChange = useMemo(() => (e) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
@@ -66,7 +66,7 @@ const Contact = () => {
         [name]: ''
       }))
     }
-  }
+  }, [errors])
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -553,4 +553,4 @@ const Contact = () => {
   )
 }
 
-export default Contact
+export default memo(Contact)

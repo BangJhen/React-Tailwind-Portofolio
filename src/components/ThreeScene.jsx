@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, memo } from 'react';
 import * as THREE from 'three';
 import { useFrame, Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Float, Text } from '@react-three/drei';
 
 // A colorful particle system
-function ParticleSystem() {
+const ParticleSystem = memo(() => {
   const particles = useRef();
   const count = 1000;
   
@@ -64,10 +64,10 @@ function ParticleSystem() {
       />
     </points>
   );
-}
+});
 
 // A floating 3D model
-function Model(props) {
+const Model = memo((props) => {
   const mesh = useRef();
   const [hovered, setHovered] = useState(false);
   
@@ -103,10 +103,10 @@ function Model(props) {
       </mesh>
     </Float>
   );
-}
+});
 
 // Orbiting spheres
-function OrbitingSpheres() {
+const OrbitingSpheres = memo(() => {
   const group = useRef();
   
   const spheres = [
@@ -129,9 +129,9 @@ function OrbitingSpheres() {
       ))}
     </group>
   );
-}
+});
 
-function Sphere({ radius, speed, size, color, offset }) {
+const Sphere = memo(({ radius, speed, size, color, offset }) => {
   const ref = useRef();
   
   useFrame(({ clock }) => {
@@ -153,7 +153,7 @@ function Sphere({ radius, speed, size, color, offset }) {
       />
     </mesh>
   );
-}
+});
 
 // Main component that wraps the 3D scene
 const ThreeScene = ({ className }) => {
@@ -179,4 +179,4 @@ const ThreeScene = ({ className }) => {
   );
 };
 
-export default ThreeScene;
+export default memo(ThreeScene);
