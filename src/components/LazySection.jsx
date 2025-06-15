@@ -7,11 +7,12 @@ const LazySection = memo(({
   className = '',
   minHeight = '200px',
   options = {},
+  preloadForAnimations = false,
   ...props 
 }) => {
   const lazyOptions = {
     threshold: 0.1,
-    rootMargin: '100px', // Start loading 100px before the element comes into view
+    rootMargin: preloadForAnimations ? '400px' : '100px', // Larger margin for animations
     ...options
   }
   

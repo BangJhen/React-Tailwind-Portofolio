@@ -64,30 +64,22 @@ function App() {
       <Header />
       <Hero />
       
-      {/* Below the fold - lazy load with Intersection Observer */}
-      <LazySection minHeight="600px" options={{ rootMargin: '200px' }}>
-        <Suspense fallback={<SectionLoader minHeight="600px" />}>
-          <About />
-        </Suspense>
-      </LazySection>
+      {/* Load all components to ensure animations work */}
+      <Suspense fallback={<SectionLoader minHeight="600px" />}>
+        <About />
+      </Suspense>
       
-      <LazySection minHeight="500px" options={{ rootMargin: '150px' }}>
-        <Suspense fallback={<SectionLoader minHeight="500px" />}>
-          <SelectedWork />
-        </Suspense>
-      </LazySection>
+      <Suspense fallback={<SectionLoader minHeight="500px" />}>
+        <SelectedWork />
+      </Suspense>
       
-      <LazySection minHeight="600px" options={{ rootMargin: '100px' }}>
-        <Suspense fallback={<SectionLoader minHeight="600px" />}>
-          <Contact />
-        </Suspense>
-      </LazySection>
+      <Suspense fallback={<SectionLoader minHeight="600px" />}>
+        <Contact />
+      </Suspense>
       
-      <LazySection minHeight="200px" options={{ rootMargin: '50px' }}>
-        <Suspense fallback={<SectionLoader minHeight="200px" />}>
-          <Footer />
-        </Suspense>
-      </LazySection>
+      <Suspense fallback={<SectionLoader minHeight="200px" />}>
+        <Footer />
+      </Suspense>
     </div>
   )
 }
