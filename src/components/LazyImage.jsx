@@ -26,7 +26,7 @@ const LazyImage = memo(({
   return (
     <div ref={ref} className={`lazy-image-container ${className}`.trim()} {...props}>
       {isError ? (
-        <div className="flex items-center justify-center bg-gray-200 text-gray-500 h-full min-h-[200px]">
+        <div className="flex items-center justify-center bg-gray-200 text-gray-500 h-full min-h-[150px] sm:min-h-[200px] text-xs sm:text-sm">
           Failed to load image
         </div>
       ) : imageSrc ? (
@@ -41,8 +41,8 @@ const LazyImage = memo(({
         />
       ) : (
         placeholder || (
-          <div className="flex items-center justify-center bg-gray-100 h-full min-h-[200px]">
-            <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+          <div className="flex items-center justify-center bg-gray-100 h-full min-h-[150px] sm:min-h-[200px]">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
           </div>
         )
       )}

@@ -1,24 +1,28 @@
 import { useState, useEffect, memo, useMemo } from 'react'
-// eslint-disable-next-line no-unused-vars
-import { motion } from "motion/react"
-import { useScrollTrigger, useStaggerAnimation } from '../hooks/useAnimations'
 import LazyImage from './LazyImage'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 const SelectedWork = () => {
   const [activeFilter, setActiveFilter] = useState('All')
-  const [isMobile, setIsMobile] = useState(false)
-  const [headerRef, headerVisible] = useScrollTrigger(0.2)
-  const [projectsRef, visibleProjects] = useStaggerAnimation(4, 200)
 
-  // Detect mobile layout
+  // Initialize AOS with better synchronization
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768) // md breakpoint
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    AOS.init({
+      duration: 600,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 100,
+      delay: 0,
+      disable: false,
+      startEvent: 'DOMContentLoaded',
+      initClassName: 'aos-init',
+      animatedClassName: 'aos-animate',
+      useClassNames: false,
+      disableMutationObserver: false,
+      debounceDelay: 50,
+      throttleDelay: 99
+    })
   }, [])
   
   // Memoize projects data to prevent recreation
@@ -52,89 +56,75 @@ const SelectedWork = () => {
   }, [])
 
   return (
-    <section id="work" className="py-20 bg-white">
+    <section id="work" className="py-12 sm:py-16 lg:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          ref={headerRef}
-          className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-16"
-          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          animate={isMobile ? { opacity: 1, y: 0 } : (headerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 })}
-          transition={isMobile ? { duration: 0 } : { duration: 0.8, ease: "easeOut" }}
+        <div 
+          className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-12 lg:mb-16"
+          data-aos="fade-up"
+          data-aos-duration="700"
+          data-aos-delay="0"
         >
-          <div className="lg:w-1/3 mb-8 lg:mb-0">
-            <motion.h2 
-              className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
-              initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-              animate={isMobile ? { opacity: 1, x: 0 } : (headerVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 })}
-              transition={isMobile ? { duration: 0 } : { duration: 0.8, delay: 0.2 }}
+          <div className="lg:w-1/3 mb-6 lg:mb-0">
+            <h2 
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 lg:mb-4"
+              data-aos="fade-right"
+              data-aos-delay="200"
+              data-aos-duration="600"
             >
               Project<br />
-            </motion.h2>
-            <motion.button 
-              className="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors"
-              initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-              animate={isMobile ? { opacity: 1, scale: 1 } : (headerVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 })}
-              transition={isMobile ? { duration: 0 } : { duration: 0.6, delay: 0.4 }}
-              whileHover={isMobile ? {} : { scale: 1.05 }}
-              whileTap={isMobile ? {} : { scale: 0.95 }}
+            </h2>
+            <button 
+              className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-gray-900 text-white text-sm sm:text-base rounded-full hover:bg-gray-800 hover:scale-105 active:scale-95 transition-all duration-300"
+              data-aos="fade-up"
+              data-aos-delay="400"
+              data-aos-duration="500"
             >
               See All
-            </motion.button>
+            </button>
           </div>
           
           {/* Filter buttons */}
-          <motion.div 
+          <div 
             className="lg:w-2/3"
-            initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-            animate={isMobile ? { opacity: 1, x: 0 } : (headerVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 })}
-            transition={isMobile ? { duration: 0 } : { duration: 0.8, delay: 0.3 }}
+            data-aos="fade-left"
+            data-aos-delay="300"
+            data-aos-duration="600"
           >
-            <div className="flex flex-wrap gap-3 mb-8">
+            <div className="flex flex-wrap gap-2 sm:gap-3 mb-6 lg:mb-8">
               {filters.map((filter, index) => (
-                <motion.button
+                <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 ${
                     activeFilter === filter
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
-                  initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  animate={isMobile ? { opacity: 1, y: 0 } : (headerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 })}
-                  transition={isMobile ? { duration: 0 } : { duration: 0.5, delay: 0.5 + index * 0.1 }}
-                  whileHover={isMobile ? {} : { scale: 1.05 }}
-                  whileTap={isMobile ? {} : { scale: 0.95 }}
+                  data-aos="zoom-in"
+                  data-aos-delay={600 + index * 50}
                 >
                   {filter}
-                </motion.button>
+                </button>
               ))}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Projects Grid - Minimalist Design */}
-        <div ref={projectsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredProjects.map((project, index) => (
-            <motion.div 
+            <div 
               key={project.id}
               data-index={index}
-              className="group cursor-pointer"
-              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-              animate={isMobile ? { opacity: 1, y: 0 } : (visibleProjects.has(index) ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 })}
-              transition={isMobile ? { duration: 0 } : { 
-                duration: 0.6, 
-                ease: "easeOut",
-                delay: index * 0.1 
-              }}
-              whileHover={isMobile ? {} : { y: -2 }}
+              className="group cursor-pointer hover:-translate-y-2 transition-all duration-300"
               onClick={() => handleProjectClick(project.href)}
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
             >
               <div className="bg-white rounded-lg overflow-hidden border border-gray-100 hover:border-gray-200 transition-all duration-200 hover:shadow-sm">
                 {/* Smaller Image */}
-                <motion.div 
-                  className="relative overflow-hidden"
-                  whileHover={isMobile ? {} : { scale: 1.02 }}
-                  transition={isMobile ? { duration: 0 } : { duration: 0.2 }}
+                <div 
+                  className="relative overflow-hidden group-hover:scale-102 transition-transform duration-200"
                 >
                   <div className="aspect-[4/3] relative">
                     <LazyImage
@@ -145,26 +135,22 @@ const SelectedWork = () => {
                     />
                     {/* Minimalist hover overlay */}
                     <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                      <motion.div 
-                        className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-sm"
-                        initial={isMobile ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
-                        whileHover={isMobile ? {} : { scale: 1, opacity: 1 }}
-                        transition={isMobile ? { duration: 0 } : { duration: 0.15 }}
+                      <div 
+                        className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-sm opacity-0 scale-80 group-hover:opacity-100 group-hover:scale-100 transition-all duration-150"
                       >
                         <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
-                      </motion.div>
+                      </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
                 
                 {/* Compact Content */}
-                <motion.div 
+                <div 
                   className="p-4"
-                  initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
-                  animate={isMobile ? { opacity: 1 } : (visibleProjects.has(index) ? { opacity: 1 } : { opacity: 0 })}
-                  transition={isMobile ? { duration: 0 } : { duration: 0.4, delay: index * 0.1 + 0.2 }}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100 + 200}
                 >
                   {/* Title and Year */}
                   <div className="mb-2">
@@ -179,15 +165,16 @@ const SelectedWork = () => {
                   {/* Tags - More compact */}
                   <div className="flex flex-wrap gap-1 mb-3">
                     {project.category.map((cat, catIndex) => (
-                      <motion.span 
+                      <span 
                         key={cat}
-                        className="px-2 py-1 text-xs font-medium rounded-md bg-gray-50 text-gray-600 border border-gray-100"
-                        initial={isMobile ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                        animate={isMobile ? { opacity: 1, scale: 1 } : (visibleProjects.has(index) ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 })}
-                        transition={isMobile ? { duration: 0 } : { duration: 0.3, delay: index * 0.1 + 0.3 + catIndex * 0.05 }}
+                        className="px-2 py-1 text-xs font-medium rounded-md bg-gray-50 text-gray-600 border border-gray-100 opacity-0 scale-80 animate-fadeIn"
+                        style={{ 
+                          animationDelay: `${index * 100 + 300 + catIndex * 50}ms`,
+                          animationFillMode: 'forwards'
+                        }}
                       >
                         {cat}
-                      </motion.span>
+                      </span>
                     ))}
                   </div>
 
@@ -196,20 +183,18 @@ const SelectedWork = () => {
                     <span className="text-xs text-gray-400 font-medium">
                       {project.year}
                     </span>
-                    <motion.div 
-                      className="flex items-center text-gray-500 group-hover:text-gray-700 transition-colors duration-200"
-                      whileHover={isMobile ? {} : { x: 2 }}
-                      transition={isMobile ? { duration: 0 } : { duration: 0.15 }}
+                    <div 
+                      className="flex items-center text-gray-500 group-hover:text-gray-700 group-hover:translate-x-1 transition-all duration-200"
                     >
                       <span className="text-xs font-medium">View</span>
                       <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
-                    </motion.div>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -1,30 +1,33 @@
-// eslint-disable-next-line no-unused-vars
-import { motion } from "motion/react"
-import { memo, useMemo } from 'react'
-import { useScrollTrigger } from '../hooks/useAnimations'
+import { memo, useMemo, useEffect } from 'react'
+import AOS from 'aos'
 
 const Footer = () => {
-  const [footerRef, footerVisible] = useScrollTrigger(0.2)
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 100
+    })
+  }, [])
   
   // Memoize current year to prevent recalculation
   const currentYear = useMemo(() => new Date().getFullYear(), [])
 
   return (
-    <motion.footer 
-      ref={footerRef}
+    <footer 
+      data-aos="fade-up" 
+      data-aos-delay="100"
       className="bg-gradient-to-r from-gray-50 to-blue-50 border-t border-gray-200/50 py-8"
-      initial={{ opacity: 0, y: 50 }}
-      animate={footerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.8 }}
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4">
           {/* Logo/Brand Section */}
-          <motion.div 
+          <div 
+            data-aos="zoom-in" 
+            data-aos-delay="200"
             className="flex justify-center items-center space-x-2"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={footerVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
           >
             {/* Compact Logo */}
             <div className="w-6 h-6 relative">
@@ -84,31 +87,29 @@ const Footer = () => {
             </div>
             
             <div className="text-left">
-              <h3 className="text-base font-bold bg-gradient-to-r from-gray-900 via-blue-700 to-purple-700 bg-clip-text text-transparent">
+              <h3 className="text-sm sm:text-base font-bold bg-gradient-to-r from-gray-900 via-blue-700 to-purple-700 bg-clip-text text-transparent">
                 Ammar Ridho
               </h3>
               <p className="text-xs text-gray-600 -mt-0.5">AI Engineer</p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Description */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={footerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+          <div
+            data-aos="fade-up" 
+            data-aos-delay="300"
             className="max-w-lg mx-auto"
           >
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 text-xs sm:text-sm">
               Building intelligent AI solutions that solve real-world challenges.
             </p>
-          </motion.div>
+          </div>
 
           {/* Skills/Expertise Tags */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={footerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-wrap justify-center gap-1.5 max-w-lg mx-auto"
+          <div
+            data-aos="fade-up" 
+            data-aos-delay="400"
+            className="flex flex-wrap justify-center gap-1 sm:gap-1.5 max-w-lg mx-auto"
           >
             {[
               'Machine Learning',
@@ -116,24 +117,21 @@ const Footer = () => {
               'Python',
               'AI Solutions'
             ].map((skill, index) => (
-              <motion.span
+              <span
                 key={skill}
-                className="px-2 py-1 bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-full text-xs text-gray-700 font-medium"
-                whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={footerVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
+                className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-white/60 backdrop-blur-sm border border-gray-200/50 rounded-full text-xs text-gray-700 font-medium hover:scale-105 hover:bg-white/80 transition-all duration-300"
+                data-aos="zoom-in"
+                data-aos-delay={500 + index * 100}
               >
                 {skill}
-              </motion.span>
+              </span>
             ))}
-          </motion.div>
+          </div>
 
           {/* Copyright and Status */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={footerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: 1.0 }}
+          <div
+            data-aos="fade-up" 
+            data-aos-delay="600"
             className="flex flex-col sm:flex-row justify-center items-center space-y-1 sm:space-y-0 sm:space-x-4 text-xs text-gray-500 pt-2 border-t border-gray-200/30"
           >
             <p>© {currentYear} Muhammad Ammar Ridho</p>
@@ -141,10 +139,10 @@ const Footer = () => {
               <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
               <span className="text-gray-600">Available for opportunities</span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   )
 }
 

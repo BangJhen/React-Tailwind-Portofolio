@@ -24,8 +24,8 @@ const LazySection = memo(({
       style={{ minHeight }}
     >
       <div className="relative">
-        <div className="w-8 h-8 rounded-full border-2 border-blue-200"></div>
-        <div className="w-8 h-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin absolute top-0 left-0"></div>
+        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-blue-200"></div>
+        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin absolute top-0 left-0"></div>
       </div>
     </div>
   )

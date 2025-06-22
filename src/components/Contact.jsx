@@ -1,11 +1,26 @@
-// eslint-disable-next-line no-unused-vars
-import { motion } from "motion/react"
-import { useState, useRef, memo, useMemo } from 'react'
+import { useState, useRef, memo, useMemo, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
-import { useScrollTrigger } from '../hooks/useAnimations'
+import AOS from 'aos'
 
 const Contact = () => {
-  const [contactRef, contactVisible] = useScrollTrigger(0.2)
+  // Initialize AOS with better synchronization
+  useEffect(() => {
+    AOS.init({
+      duration: 600,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 100,
+      delay: 0,
+      disable: false,
+      startEvent: 'DOMContentLoaded',
+      initClassName: 'aos-init',
+      animatedClassName: 'aos-animate',
+      useClassNames: false,
+      disableMutationObserver: false,
+      debounceDelay: 50,
+      throttleDelay: 99
+    })
+  }, [])
   const form = useRef()
   
   // Form state management
@@ -120,149 +135,107 @@ const Contact = () => {
     }
   }
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  }
-
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  }
-
-  const formVariants = {
-    hidden: { opacity: 0, x: 50 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut",
-        delay: 0.3
-      }
-    }
-  }
-
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50">
+    <section id="contact" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
-        <motion.div
-          ref={contactRef}
-          variants={containerVariants}
-          initial="hidden"
-          animate={contactVisible ? "visible" : "hidden"}
-          className="text-center mb-16"
+        {/* Mobile Optimized Header Section */}
+        <div 
+          data-aos="fade-up" 
+          data-aos-delay="0"
+          data-aos-duration="700"
+          className="text-center mb-12 lg:mb-16"
         >
-          <motion.p 
-            variants={itemVariants}
-            className="text-blue-500 font-medium text-lg mb-4"
+          <p 
+            data-aos="fade-up" 
+            data-aos-delay="200"
+            data-aos-duration="600"
+            className="text-blue-500 font-medium text-sm sm:text-base lg:text-lg mb-2 lg:mb-4"
           >
-            Contact Me
-          </motion.p>
-          <motion.h2 
-            variants={itemVariants}
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-6 leading-tight px-4"
+            Get in Touch
+          </p>
+          <h2 
+            data-aos="fade-up" 
+            data-aos-delay="300"
+            data-aos-duration="700"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 lg:mb-4"
           >
-            Let's Work Together
-          </motion.h2>
-          <motion.p 
-            variants={itemVariants}
-            className="text-xl text-gray-600 max-w-2xl mx-auto"
+            Let's Build Something Great Together
+          </h2>
+          <div 
+            data-aos="fade-up" 
+            data-aos-delay="400"
+            data-aos-duration="600"
+            className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-6 lg:mb-8 rounded-full"
+          />
+          <p 
+            data-aos="fade-up" 
+            data-aos-delay="500"
+            data-aos-duration="600"
+            className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed"
           >
-            Have a project in mind? I'd love to hear about it. Send me a message and let's discuss how we can bring your ideas to life.
-          </motion.p>
-        </motion.div>
+            Ready to start your next project? Let's discuss how I can help bring your ideas to life with cutting-edge AI and web solutions.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Left Column - Social Media and Contact Information */}
-          <motion.div 
-            className="space-y-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate={contactVisible ? "visible" : "hidden"}
+        <div 
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-start"
+          data-aos="fade-up"
+          data-aos-delay="600"
+          data-aos-duration="700"
+        >
+          {/* Left Column - Mobile Optimized Social Media and Contact Information */}
+          <div 
+            data-aos="fade-right" 
+            data-aos-delay="700"
+            data-aos-duration="600"
+            className="space-y-4 lg:space-y-6"
           >
-            {/* Social Media Links - Enhanced */}
-            <motion.div 
-              variants={cardVariants}
-              className="bg-gradient-to-br from-white via-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100"
+            {/* Mobile Optimized Social Media Links */}
+            <div 
+              data-aos="fade-up" 
+              data-aos-delay="600"
+              className="bg-gradient-to-br from-white via-blue-50 to-purple-50 rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100"
             >
-              <div className="text-center mb-8">
-                <motion.div
-                  className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4"
+              <div className="text-center mb-6 lg:mb-8">
+                <div
+                  className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 lg:mb-4"
                 >
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
                   </svg>
-                </motion.div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Let's Connect!</h3>
-                <p className="text-gray-600 text-base">Follow me on social media for updates and insights</p>
+                </div>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-1 lg:mb-2">Let's Connect!</h3>
+                <p className="text-gray-600 text-sm sm:text-base">Follow me on social media for updates and insights</p>
               </div>
               
-              <div className="grid grid-cols-1 gap-4">
-                {/* Bento.me */}
-                <motion.a
+              <div className="grid grid-cols-1 gap-3 lg:gap-4">
+                {/* Mobile Optimized Bento.me */}
+                <a
                   href="https://bento.me/ammar-ridho"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-orange-400 hover:bg-gradient-to-r hover:from-orange-400 hover:to-yellow-400 group transition-all duration-300 shadow-sm hover:shadow-md"
-                  whileHover={{ 
-                    x: 5,
-                    transition: { duration: 0.3 }
-                  }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center p-3 lg:p-4 bg-white rounded-lg lg:rounded-xl border border-gray-200 hover:border-orange-400 hover:bg-gradient-to-r hover:from-orange-400 hover:to-yellow-400 group transition-all duration-300 shadow-sm hover:shadow-md hover:translate-x-1"
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-4">
-                    <svg className="w-6 h-6 text-orange-600 group-hover:text-orange-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-3 lg:mr-4">
+                    <svg className="w-5 h-5 sm:w-5.5 sm:h-5.5 lg:w-6 lg:h-6 text-orange-600 group-hover:text-orange-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 group-hover:text-white transition-colors duration-300">Bento.me</h4>
+                    <h4 className="font-semibold text-sm sm:text-base text-gray-900 group-hover:text-white transition-colors duration-300">Bento.me</h4>
                     <p className="text-sm text-gray-600 group-hover:text-orange-100 transition-colors duration-300">All my links in one place</p>
                   </div>
                   <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
-                </motion.a>
+                </a>
 
                 {/* GitHub */}
-                <motion.a
+                <a
                   href="https://github.com/BangJhen"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-900 hover:bg-gray-900 group transition-all duration-300 shadow-sm hover:shadow-md"
-                  whileHover={{ 
-                    x: 5,
-                    transition: { duration: 0.3 }
-                  }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-900 hover:bg-gray-900 group transition-all duration-300 shadow-sm hover:shadow-md hover:translate-x-1"
                 >
                   <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-4">
                     <svg className="w-6 h-6 text-gray-700 group-hover:text-gray-900 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
@@ -276,19 +249,14 @@ const Contact = () => {
                   <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
-                </motion.a>
+                </a>
 
                 {/* LinkedIn */}
-                <motion.a
+                <a
                   href="https://www.linkedin.com/in/ammar-ridho"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-600 hover:bg-blue-600 group transition-all duration-300 shadow-sm hover:shadow-md"
-                  whileHover={{ 
-                    x: 5,
-                    transition: { duration: 0.3 }
-                  }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-600 hover:bg-blue-600 group transition-all duration-300 shadow-sm hover:shadow-md hover:translate-x-1"
                 >
                   <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-4">
                     <svg className="w-6 h-6 text-blue-600 group-hover:text-blue-600 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
@@ -302,19 +270,14 @@ const Contact = () => {
                   <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
-                </motion.a>
+                </a>
 
                 {/* Instagram */}
-                <motion.a
+                <a
                   href="https://www.instagram.com/ammarridhojr/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-pink-400 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 group transition-all duration-300 shadow-sm hover:shadow-md"
-                  whileHover={{ 
-                    x: 5,
-                    transition: { duration: 0.3 }
-                  }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center p-4 bg-white rounded-xl border border-gray-200 hover:border-pink-400 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 group transition-all duration-300 shadow-sm hover:shadow-md hover:translate-x-1"
                 >
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center group-hover:bg-white transition-all duration-300 mr-4">
                     <svg className="w-6 h-6 text-purple-600 group-hover:text-purple-600 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
@@ -328,16 +291,15 @@ const Contact = () => {
                   <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
-                </motion.a>
+                </a>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Contact Form */}
-          <motion.div
-            variants={formVariants}
-            initial="hidden"
-            animate={contactVisible ? "visible" : "hidden"}
+          <div
+            data-aos="fade-left" 
+            data-aos-delay="700"
             className="bg-white rounded-3xl p-8 shadow-xl border border-white/20"
           >
             <div className="mb-8">
@@ -351,10 +313,8 @@ const Contact = () => {
 
             {/* Success/Error Messages */}
             {submitStatus === 'success' && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg"
+              <div
+                className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg animate-fade-in"
               >
                 <div className="flex items-center">
                   <svg className="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -364,14 +324,12 @@ const Contact = () => {
                     Message sent successfully! I'll get back to you soon.
                   </p>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {submitStatus === 'error' && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg"
+              <div
+                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in"
               >
                 <div className="flex items-center">
                   <svg className="w-5 h-5 text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -381,7 +339,7 @@ const Contact = () => {
                     Failed to send message. Please try again or email me directly.
                   </p>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {/* Contact Form */}
@@ -410,13 +368,11 @@ const Contact = () => {
                   placeholder="Enter your full name"
                 />
                 {errors.fullName && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-1 text-sm text-red-600"
+                  <p
+                    className="mt-1 text-sm text-red-600 animate-fade-in"
                   >
                     {errors.fullName}
-                  </motion.p>
+                  </p>
                 )}
               </div>
 
@@ -439,13 +395,11 @@ const Contact = () => {
                   placeholder="Enter your email address"
                 />
                 {errors.email && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-1 text-sm text-red-600"
+                  <p
+                    className="mt-1 text-sm text-red-600 animate-fade-in"
                   >
                     {errors.email}
-                  </motion.p>
+                  </p>
                 )}
               </div>
 
@@ -468,13 +422,11 @@ const Contact = () => {
                   placeholder="Enter your phone number"
                 />
                 {errors.phone && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-1 text-sm text-red-600"
+                  <p
+                    className="mt-1 text-sm text-red-600 animate-fade-in"
                   >
                     {errors.phone}
-                  </motion.p>
+                  </p>
                 )}
               </div>
 
@@ -497,18 +449,16 @@ const Contact = () => {
                   placeholder="Tell me about your project or message..."
                 />
                 {errors.message && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-1 text-sm text-red-600"
+                  <p
+                    className="mt-1 text-sm text-red-600 animate-fade-in"
                   >
                     {errors.message}
-                  </motion.p>
+                  </p>
                 )}
               </div>
 
               {/* Submit Button */}
-              <motion.button
+              <button
                 type="submit"
                 disabled={isLoading}
                 className={`w-full py-4 px-6 rounded-lg font-semibold text-white transition-all duration-300 ${
@@ -516,10 +466,6 @@ const Contact = () => {
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-[1.02] active:scale-[0.98]'
                 } shadow-lg hover:shadow-xl`}
-                whileHover={!isLoading ? { 
-                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
-                } : {}}
-                whileTap={!isLoading ? { scale: 0.98 } : {}}
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
@@ -537,7 +483,7 @@ const Contact = () => {
                     </svg>
                   </div>
                 )}
-              </motion.button>
+              </button>
             </form>
 
             {/* Additional Info */}
@@ -546,7 +492,7 @@ const Contact = () => {
                 All fields marked with * are required. Your information will be kept confidential.
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

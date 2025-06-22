@@ -1,24 +1,34 @@
-// eslint-disable-next-line no-unused-vars
-import { motion } from "motion/react"
 import { useState, useEffect, useRef, memo, useMemo } from "react"
-import { useScrollTrigger } from '../hooks/useAnimations'
 import { getAllSkills } from '../data/skillsUtils'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 const About = () => {
-  const [aboutRef, aboutVisible] = useScrollTrigger(0.3)
-  const [skillsRef, skillsVisible] = useScrollTrigger(0.2)
   const [selectedSkill, setSelectedSkill] = useState(null)
   
   // Memoize skills data to prevent unnecessary recalculations
   const skills = useMemo(() => getAllSkills(), [])
   
   const sectionRefs = useRef([])
-  const skillTiltRefs = useRef([])
 
-  // Initialize skillTiltRefs when component mounts
+  // Initialize AOS with better synchronization
   useEffect(() => {
-    skillTiltRefs.current = new Array(skills.length).fill(null)
-  }, [skills.length])
+    AOS.init({
+      duration: 600,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 100,
+      delay: 0,
+      disable: false,
+      startEvent: 'DOMContentLoaded',
+      initClassName: 'aos-init',
+      animatedClassName: 'aos-animate',
+      useClassNames: false,
+      disableMutationObserver: false,
+      debounceDelay: 50,
+      throttleDelay: 99
+    })
+  }, [])
 
   // Initialize sectionRefs when selectedSkill changes
   useEffect(() => {
@@ -27,11 +37,14 @@ const About = () => {
     }
   }, [selectedSkill])
 
-  // Scroll lock effect when modal is open
+  // Scroll lock effect and header blur when modal is open
   useEffect(() => {
     if (selectedSkill) {
       // Save current scroll position
       const scrollY = window.scrollY
+      
+      // Add class to body for header styling
+      document.body.classList.add('modal-open')
       
       // Lock body scroll
       document.body.style.position = 'fixed'
@@ -41,6 +54,7 @@ const About = () => {
       
       // Cleanup function to restore scroll
       return () => {
+        document.body.classList.remove('modal-open')
         document.body.style.position = ''
         document.body.style.top = ''
         document.body.style.width = ''
@@ -71,61 +85,6 @@ const About = () => {
     }
   }, [selectedSkill])
 
-  const containerVariants = useMemo(() => ({
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3
-      }
-    }
-  }), [])
-
-  const itemVariants = useMemo(() => ({
-    hidden: { opacity: 0, x: -50 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
-  }), [])
-
-  // Lightweight 3D tilt effect
-  const handleTiltChange = (tiltRef, e) => {
-    if (!tiltRef.current) return;
-    
-    const card = tiltRef.current;
-    const rect = card.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const mouseX = e.clientX - centerX;
-    const mouseY = e.clientY - centerY;
-    
-    // Subtle rotation for 3D effect
-    const rotateX = (mouseY / rect.height) * -8; // Reduced from -15 for lighter effect
-    const rotateY = (mouseX / rect.width) * 8;   // Reduced from 15 for lighter effect
-    
-    // Apply transform with hardware acceleration
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-    
-    // Simple shadow for depth
-    const shadowX = mouseX / 30;
-    const shadowY = mouseY / 30;
-    card.style.boxShadow = `${shadowX}px ${shadowY + 10}px 25px rgba(0, 0, 0, 0.12)`;
-  };
-
-  // Reset with smooth transition
-  const resetTilt = (tiltRef) => {
-    if (!tiltRef.current) return;
-    
-    tiltRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-    tiltRef.current.style.boxShadow = '0px 8px 25px rgba(0, 0, 0, 0.08)';
-    tiltRef.current.style.transition = 'all 0.4s cubic-bezier(0.23, 1, 0.320, 1)';
-  };
-
   return (
     <section id="about" className="relative py-20 min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50 overflow-hidden">
       {/* Modern Background Design */}
@@ -152,481 +111,374 @@ const About = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={aboutRef} className="grid grid-cols-1 lg:grid-cols-2 gap-20 xl:gap-24 items-start">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={aboutVisible ? "visible" : "hidden"}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 xl:gap-24 items-start">
+          <div
             className="relative lg:sticky lg:top-20"
+            data-aos="fade-right"
+            data-aos-duration="800"
+            data-aos-delay="0"
           >
-            {/* Enhanced Section Header */}
-            <motion.div 
-              variants={itemVariants}
-              className="relative mb-8"
+            {/* Mobile Optimized Section Header */}
+            <div 
+              className="relative mb-6 lg:mb-8"
+              data-aos="fade-up"
+              data-aos-delay="100"
+              data-aos-duration="600"
             >
-              <motion.h2 
-                className="text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 leading-tight"
-                whileHover={{
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                  transition: { duration: 2 }
-                }}
+              <h2 
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 leading-tight"
+                data-aos="fade-up"
+                data-aos-delay="200"
+                data-aos-duration="700"
               >
                 About Me
-              </motion.h2>
+              </h2>
               
-              {/* Decorative accent line */}
-              <motion.div 
-                className="mt-4 w-24 h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full"
-                initial={{ scaleX: 0 }}
-                animate={aboutVisible ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
+              {/* Responsive decorative accent line */}
+              <div 
+                className="mt-2 lg:mt-4 w-16 sm:w-20 lg:w-24 h-1 lg:h-1.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full"
+                data-aos="scale-x"
+                data-aos-delay="400"
+                data-aos-duration="500"
               />
               
-              {/* Background text decoration */}
-              <div className="absolute -top-4 -left-4 text-8xl md:text-9xl font-black text-purple-100/30 -z-10 select-none">
+              {/* Mobile optimized background text decoration */}
+              <div className="absolute -top-2 lg:-top-4 -left-2 lg:-left-4 text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-purple-100/30 -z-10 select-none">
                 About
               </div>
-            </motion.div>
+            </div>
 
-            {/* Enhanced Content Container */}
-            <div className="relative bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-              {/* Content paragraphs with improved typography */}
-              <motion.p 
-                variants={itemVariants}
-                className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed font-medium"
+            {/* Mobile Optimized Content Container */}
+            <div 
+              className="relative bg-white/60 backdrop-blur-sm rounded-2xl lg:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-xl border border-white/20"
+              data-aos="fade-up"
+              data-aos-delay="300"
+              data-aos-duration="700"
+            >
+              {/* Mobile optimized content paragraphs */}
+              <p 
+                className="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-700 mb-4 sm:mb-5 lg:mb-6 leading-relaxed font-medium"
+                data-aos="fade-up"
+                data-aos-delay="500"
+                data-aos-duration="600"
               >
                 I'm a passionate <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 font-semibold">Artificial Intelligence Engineer</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-semibold">Web Developer</span> with over 1 year of experience creating innovative solutions that bridge technology and human needs.
-              </motion.p>
+              </p>
               
-              <motion.p 
-                variants={itemVariants}
-                className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed"
+              <p 
+                className="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-700 mb-4 sm:mb-5 lg:mb-6 leading-relaxed"
+                data-aos="fade-up"
+                data-aos-delay="600"
+                data-aos-duration="600"
               >
                 My expertise spans <strong className="text-gray-900">Time Series Forecasting</strong> competitions, where I've applied cutting-edge methods and techniques. I've also gained hands-on experience implementing AI solutions, including <strong className="text-gray-900">Computer Vision for music control through hand gestures</strong> - a project that showcases my ability to translate complex AI concepts into practical applications.
-              </motion.p>
+              </p>
 
-              <motion.p 
-                variants={itemVariants}
-                className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed"
+              <p 
+                className="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-700 mb-6 sm:mb-7 lg:mb-8 leading-relaxed"
+                data-aos="fade-up"
+                data-aos-delay="700"
+                data-aos-duration="600"
               >
                 Currently, I'm deeply focused on <strong className="text-gray-900">Large Language Models (LLMs)</strong> and their transformative potential. I'm working on developing a <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-semibold">personalized AI Assistant</span> that leverages Transformer-based models to understand and adapt to user-specific language patterns and communication styles.
-              </motion.p>
+              </p>
 
-              {/* Enhanced stats or highlights */}
-              <motion.div 
-                variants={itemVariants}
-                className="grid grid-cols-2 gap-6 mt-8 pt-6 border-t border-gray-200/50"
+              {/* Mobile optimized stats */}
+              <div 
+                className="grid grid-cols-2 gap-4 sm:gap-5 lg:gap-6 mt-6 sm:mt-7 lg:mt-8 pt-4 sm:pt-5 lg:pt-6 border-t border-gray-200/50"
+                data-aos="fade-up"
+                data-aos-delay="800"
+                data-aos-duration="600"
               >
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">1+</div>
-                  <div className="text-sm text-gray-600 font-medium">Years Experience</div>
+                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">1+</div>
+                  <div className="text-xs sm:text-sm text-gray-600 font-medium">Years Experience</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI/ML</div>
-                  <div className="text-sm text-gray-600 font-medium">Specialization</div>
+                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI/ML</div>
+                  <div className="text-xs sm:text-sm text-gray-600 font-medium">Specialization</div>
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            ref={skillsRef}
+          <div 
             className="relative space-y-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate={skillsVisible ? "visible" : "hidden"}
+            data-aos="fade-left"
+            data-aos-duration="800"
+            data-aos-delay="200"
           >
-            {/* Enhanced Skills Header */}
-            <motion.div 
-              variants={itemVariants}
-              className="relative mb-8"
+            {/* Mobile Optimized Skills Header */}
+            <div 
+              className="relative mb-6 lg:mb-8"
+              data-aos="fade-up"
+              data-aos-delay="400"
+              data-aos-duration="600"
             >
-              <motion.h3 
-                className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-4"
+              <h3 
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 mb-3 lg:mb-4"
+                data-aos="fade-up"
+                data-aos-delay="500"
+                data-aos-duration="700"
               >
                 Skills & Expertise
-              </motion.h3>
+              </h3>
               
-              {/* Decorative line for skills section */}
-              <motion.div 
-                className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
-                initial={{ scaleX: 0 }}
-                animate={skillsVisible ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+              {/* Responsive decorative line for skills section */}
+              <div 
+                className="w-14 sm:w-16 lg:w-20 h-0.5 lg:h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
+                data-aos="scale-x"
+                data-aos-delay="700"
+                data-aos-duration="500"
               />
               
-              {/* Background decoration */}
-              <div className="absolute -top-2 -right-4 text-6xl md:text-7xl font-black text-blue-100/20 -z-10 select-none">
+              {/* Mobile optimized background decoration */}
+              <div className="absolute -top-1 lg:-top-2 -right-2 lg:-right-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-blue-100/20 -z-10 select-none">
                 Skills
               </div>
-            </motion.div>
-             {/* Creative & Bold Skills Grid - Two Columns with Optimized Text */}
-            <div className="grid grid-cols-2 lg:grid-cols-2 gap-3 lg:gap-4">
-              {skills.map((skill, index) => {
-                const tiltRef = { current: skillTiltRefs.current[index] };
-                return (
-                  <motion.div 
+            </div>
+            
+            {/* Interactive Skills Grid - Mobile Optimized */}
+            <div 
+              className="space-y-6 lg:space-y-8"
+              data-aos="fade-up"
+              data-aos-delay="600"
+              data-aos-duration="700"
+            >
+              {/* Skills Grid - Responsive 2 Column Layout */}
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:gap-6">
+                {skills.map((skill, index) => (
+                  <div 
                     key={index} 
-                    className="skill-card group cursor-pointer"
-                    variants={itemVariants}
-                    transition={{ delay: index * 0.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    whileHover={{ 
-                      y: -8, 
-                      scale: 1.02,
-                      transition: { 
-                        duration: 0.15, 
-                        type: "spring",
-                        stiffness: 600,
-                        damping: 20
-                      } 
-                    }}
+                    className="group cursor-pointer"
+                    data-aos="zoom-in"
+                    data-aos-delay={800 + (index * 50)}
+                    data-aos-duration="500"
                     onClick={() => setSelectedSkill(selectedSkill === skill ? null : skill)}
                   >
-                    <div 
-                      ref={el => skillTiltRefs.current[index] = el}
-                      className={`relative h-32 lg:h-36 w-full p-1 rounded-2xl overflow-hidden transition-all duration-500 ${
-                        selectedSkill === skill 
-                          ? 'ring-4 ring-purple-400/50 ring-offset-2 ring-offset-slate-50' 
-                          : ''
-                      }`}
-                      style={{
-                        transformStyle: 'preserve-3d',
-                        transition: 'transform 0.15s ease-out, box-shadow 0.3s ease',
-                        willChange: 'transform',
-                      }}
-                      onMouseMove={(e) => handleTiltChange(tiltRef, e)}
-                      onMouseLeave={() => resetTilt(tiltRef)}
-                    >
-                      {/* Dynamic Gradient Background */}
-                      <div 
-                        className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${skill.color} opacity-90 group-hover:opacity-100 transition-all duration-150 group-hover:brightness-110`}
-                      />
+                    <div className={`relative overflow-hidden rounded-xl lg:rounded-2xl transition-all duration-500 transform ${
+                      selectedSkill === skill 
+                        ? 'ring-2 lg:ring-3 ring-blue-400/70 ring-offset-2 lg:ring-offset-4 ring-offset-slate-50 scale-105 shadow-xl lg:shadow-2xl' 
+                        : 'hover:scale-[1.02] lg:hover:scale-[1.03] hover:shadow-lg lg:hover:shadow-xl hover:-translate-y-0.5 lg:hover:-translate-y-1'
+                    }`}>
                       
-                      {/* Animated Pattern Overlay */}
-                      <div className="absolute inset-0 rounded-2xl">
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/5 group-hover:from-white/15 group-hover:to-white/10 transition-all duration-150" />
-                        <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full blur-2xl transform translate-x-6 -translate-y-6 group-hover:scale-125 group-hover:bg-white/10 transition-transform duration-200" />
-                        <div className="absolute bottom-0 left-0 w-16 h-16 bg-black/10 rounded-full blur-xl transform -translate-x-3 translate-y-3 group-hover:scale-110 group-hover:bg-black/5 transition-transform duration-150" />
-                      </div>
-                      
-                      {/* Hexagonal Pattern */}
-                      <div className="absolute inset-0 opacity-5 group-hover:opacity-15 transition-opacity duration-150">
-                        <div className="absolute top-3 right-4 w-4 h-4 bg-white transform rotate-45 rounded-sm group-hover:rotate-90 group-hover:scale-110 transition-transform duration-150" />
-                        <div className="absolute bottom-3 left-3 w-3 h-3 bg-white/60 transform rotate-12 rounded-sm group-hover:rotate-45 group-hover:scale-125 transition-transform duration-150" />
-                        <div className="absolute top-1/2 left-6 w-2 h-2 bg-white/40 transform -rotate-45 rounded-full group-hover:rotate-0 group-hover:scale-150 transition-transform duration-150" />
-                      </div>
-                      
-                      {/* Main Content - Optimized for Two Columns */}
-                      <div className="relative z-10 h-full flex items-center justify-between p-3 lg:p-4 text-white">
-                        {/* Left Section - Icon and Title */}
-                        <div className="flex items-center space-x-2 lg:space-x-3 flex-1 min-w-0">
-                          {/* Compact Icon */}
-                          <motion.div 
-                            className="relative flex-shrink-0"
-                            whileHover={{ 
-                              scale: 1.1,
-                              rotate: 8,
-                              transition: { duration: 0.12, type: "spring", stiffness: 400 }
-                            }}
-                          >
-                            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center shadow-xl border border-white/30 group-hover:bg-white/30 group-hover:border-white/50 transition-all duration-150">
-                              <span className="text-sm lg:text-base font-bold drop-shadow-lg group-hover:scale-110 transition-transform duration-100">
+                      {/* Mobile Optimized Background */}
+                      <div className="relative h-24 sm:h-28 lg:h-36 bg-gradient-to-br from-white via-gray-50 to-slate-100 p-2 sm:p-3 lg:p-4 border border-gray-200/50 group-hover:border-gray-300/70 transition-all duration-300">
+                        
+                        {/* Simplified Background Pattern for Mobile */}
+                        <div className="absolute inset-0">
+                          {/* Gradient overlay matching skill color */}
+                          <div className={`absolute inset-0 bg-gradient-to-br ${skill.color} opacity-5 group-hover:opacity-10 transition-opacity duration-300`} />
+                          
+                          {/* Reduced mesh pattern for mobile */}
+                          <div className="absolute inset-0 opacity-[0.02] sm:opacity-[0.03] group-hover:opacity-[0.04] lg:group-hover:opacity-[0.06] transition-opacity duration-300">
+                            <div className="h-full w-full" style={{
+                              backgroundImage: `
+                                linear-gradient(45deg, #000 1px, transparent 1px),
+                                linear-gradient(-45deg, #000 1px, transparent 1px)
+                              `,
+                              backgroundSize: '15px 15px'
+                            }}></div>
+                          </div>
+                          
+                          {/* Smaller floating elements for mobile */}
+                          <div className="absolute top-2 right-2 lg:top-3 lg:right-4 w-2 h-2 lg:w-3 lg:h-3 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-20 group-hover:opacity-40 group-hover:scale-125 transition-all duration-300" />
+                          <div className="absolute bottom-2 left-2 lg:bottom-4 lg:left-3 w-1.5 h-1.5 lg:w-2 lg:h-2 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-15 group-hover:opacity-30 group-hover:scale-110 transition-all duration-300" />
+                          <div className="absolute top-1/2 right-3 lg:right-6 w-0.5 h-4 lg:w-1 lg:h-8 bg-gradient-to-b from-indigo-400 to-blue-500 rounded-full opacity-10 group-hover:opacity-25 transform -rotate-12 group-hover:rotate-12 transition-all duration-300" />
+                        </div>
+                        
+                        {/* Mobile Optimized Content */}
+                        <div className="relative z-10 h-full flex flex-col justify-between">
+                          
+                          {/* Top Section - Smaller Icon for Mobile */}
+                          <div className="flex items-start justify-start">
+                            {/* Responsive Icon */}
+                            <div className={`w-7 h-7 sm:w-8 sm:h-8 lg:w-12 lg:h-12 rounded-lg lg:rounded-xl bg-gradient-to-br ${skill.color} flex items-center justify-center shadow-md lg:shadow-lg border border-white/50 flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                              <span className="text-xs sm:text-sm lg:text-lg font-bold text-white drop-shadow-md">
                                 {skill.icon}
                               </span>
                             </div>
-                            {/* Glow Effect */}
-                            <div className="absolute inset-0 rounded-lg bg-white/20 blur-lg group-hover:bg-white/40 group-hover:blur-xl transition-all duration-150" />
-                          </motion.div>
+                          </div>
                           
-                          {/* Title and Status - Flexible Layout */}
-                          <div className="flex-1 min-w-0 pr-1">
-                            <motion.h4 
-                              className="text-xs lg:text-sm font-bold leading-tight drop-shadow-md break-words hyphens-auto line-clamp-2 group-hover:text-white/95 transition-colors duration-100"
-                              style={{ 
-                                wordBreak: 'break-word',
-                                overflowWrap: 'break-word',
-                                lineHeight: '1.1',
-                                fontSize: 'clamp(0.65rem, 1.5vw, 0.875rem)'
-                              }}
-                              whileHover={{ scale: 1.01, x: 1 }}
-                              transition={{ duration: 0.1 }}
-                            >
+                          {/* Bottom Section - Responsive Text */}
+                          <div className="flex-1 flex flex-col justify-end pt-1 lg:pt-2">
+                            <h4 className="text-xs sm:text-sm lg:text-base font-bold leading-tight text-gray-800 mb-0.5 lg:mb-1 line-clamp-2 group-hover:text-gray-900 transition-colors duration-300">
                               {skill.name}
-                            </motion.h4>
+                            </h4>
                             
-                            {/* Status Indicator - Compact */}
-                            <div className="flex items-center space-x-1 mt-0.5">
-                              <div className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-green-400 shadow-sm shadow-green-400/50 animate-pulse group-hover:bg-green-300 group-hover:shadow-green-300/70 group-hover:scale-125 transition-all duration-150" />
-                              <span className="text-[10px] lg:text-xs font-medium text-white/70 uppercase tracking-wide group-hover:text-white/90 transition-colors duration-100">
-                                Active
-                              </span>
+                            {/* Responsive Status indicator */}
+                            <div className="flex items-center space-x-1 lg:space-x-1.5">
+                              <div className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50 animate-pulse group-hover:bg-emerald-400 group-hover:scale-125 transition-all duration-300" />
+                              <span className="text-[10px] sm:text-xs text-gray-600 font-medium group-hover:text-gray-700 transition-colors duration-300">Active</span>
                             </div>
                           </div>
                         </div>
                         
-                        {/* Right Section - Compact Arrow */}
-                        <div className="flex items-center flex-shrink-0">
-                          {/* Interactive Arrow - Smaller for Two Columns */}
-                          <motion.div 
-                            className="w-6 h-6 lg:w-7 lg:h-7 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 group-hover:bg-white/30 group-hover:border-white/50 transition-all duration-100"
-                            animate={{ 
-                              rotate: selectedSkill === skill ? 180 : 0,
-                              scale: selectedSkill === skill ? 1.05 : 1,
-                            }}
-                            whileHover={{ 
-                              scale: 1.1,
-                              rotate: selectedSkill === skill ? 225 : 45,
-                            }}
-                            transition={{ type: "spring", stiffness: 300, damping: 15, duration: 0.1 }}
-                          >
-                            <svg className="w-2.5 h-2.5 lg:w-3 lg:h-3 text-white group-hover:scale-110 transition-transform duration-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                            </svg>
-                          </motion.div>
-                        </div>
-                      </div>
-                      
-                      {/* Animated Border Effect */}
-                      <div className="absolute inset-0 rounded-2xl">
-                        <motion.div 
-                          className="absolute inset-0 rounded-2xl border-2 border-white/30 group-hover:border-white/50"
-                          animate={{
-                            borderColor: selectedSkill === skill 
-                              ? ["rgba(255,255,255,0.5)", "rgba(255,255,255,0.8)", "rgba(255,255,255,0.5)"]
-                              : "rgba(255,255,255,0.3)"
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: selectedSkill === skill ? Infinity : 0,
-                            ease: "easeInOut"
-                          }}
-                        />
-                      </div>
-                      
-                      {/* Floating Particles */}
-                      <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-                        {[...Array(3)].map((_, i) => (
-                          <motion.div 
-                            key={i}
-                            className="absolute w-1 h-1 rounded-full bg-white/60"
-                            style={{
-                              left: `${20 + i * 30}%`,
-                              top: `${25 + i * 20}%`,
-                            }}
-                            animate={{
-                              y: [0, -20, 0],
-                              x: [0, 10, 0],
-                              opacity: [0.3, 0.8, 0.3],
-                              scale: [1, 1.5, 1],
-                            }}
-                            transition={{
-                              duration: 3 + i * 0.5,
-                              repeat: Infinity,
-                              delay: index * 0.2 + i * 0.7,
-                              ease: "easeInOut"
-                            }}
-                          />
-                        ))}
-                      </div>
-                      
-                      {/* Minimal decorative particle */}
-                      <div className="absolute inset-0 overflow-hidden rounded-xl pointer-events-none">
-                        <motion.div 
-                          className={`absolute w-0.5 h-0.5 rounded-full bg-gradient-to-r ${skill.color} opacity-30`}
-                          style={{
-                            right: '15%',
-                            top: '20%',
-                          }}
-                          animate={{
-                            y: [0, -4, 0],
-                            opacity: [0.2, 0.5, 0.2],
-                          }}
-                          transition={{
-                            duration: 2.5,
-                            repeat: Infinity,
-                            delay: index * 0.3,
-                            ease: "easeInOut"
-                          }}
-                        />
+                        {/* Responsive bottom accent */}
+                        <div className={`absolute bottom-0 left-0 right-0 h-0.5 lg:h-1 bg-gradient-to-r ${skill.color} opacity-30 group-hover:opacity-60 group-hover:h-1 lg:group-hover:h-1.5 transition-all duration-300`} />
+                        
+                        {/* Hover glow effect */}
+                        <div className="absolute inset-0 rounded-xl lg:rounded-2xl bg-gradient-to-br from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/5 group-hover:via-purple-500/5 group-hover:to-pink-500/5 transition-all duration-500" />
                       </div>
                     </div>
-                  </motion.div>
-                );
-              })}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Mobile Responsive Visual Elements */}
+              <div 
+                className="relative mt-8 lg:mt-12"
+                data-aos="fade-up"
+                data-aos-delay="1200"
+                data-aos-duration="600"
+              >
+                {/* Responsive decorative line with dots */}
+                <div 
+                  className="flex items-center justify-center space-x-1.5 lg:space-x-2"
+                  data-aos="zoom-in"
+                  data-aos-delay="1300"
+                  data-aos-duration="500"
+                >
+                  <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-purple-400/40" />
+                  <div className="w-12 sm:w-16 lg:w-20 h-0.5 bg-gradient-to-r from-purple-400/40 to-blue-400/40" />
+                  <div className="w-2 h-2 lg:w-3 lg:h-3 rounded-full bg-blue-400/40" />
+                  <div className="w-12 sm:w-16 lg:w-20 h-0.5 bg-gradient-to-r from-blue-400/40 to-purple-400/40" />
+                  <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-purple-400/40" />
+                </div>
+                
+                {/* Mobile optimized skill count indicator */}
+                <div 
+                  className="text-center mt-3 lg:mt-4"
+                  data-aos="fade-up"
+                  data-aos-delay="1400"
+                  data-aos-duration="500"
+                >
+                  <p className="text-xs sm:text-sm text-gray-500 font-medium">
+                    {skills.length} Core Skills • Click to explore
+                  </p>
+                </div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Enhanced Modern Modal for Skill Description */}
+        {/* Mobile Optimized Modal for Skill Description */}
         {selectedSkill && (
-          <motion.div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xl flex items-center justify-center z-50 p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+          <div 
+            className="fixed inset-0 bg-black/40 backdrop-blur-xl flex items-center justify-center z-[60] p-2 sm:p-4 animate-fadeIn"
             onClick={closeModal}
           >
-            <motion.div
-              className="bg-white/98 backdrop-blur-2xl rounded-3xl max-w-4xl w-full max-h-[90vh] shadow-2xl border border-white/30 overflow-hidden"
-              initial={{ scale: 0.8, opacity: 0, y: 100 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.8, opacity: 0, y: 100 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 300,
-                damping: 30,
-                duration: 0.5
-              }}
+            <div 
+              className="bg-white/98 backdrop-blur-2xl rounded-2xl lg:rounded-3xl max-w-4xl w-full max-h-[95vh] lg:max-h-[90vh] shadow-2xl border border-white/30 overflow-hidden animate-slideUp"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Enhanced Modal Header */}
-              <div 
-                className={`relative p-8 bg-gradient-to-br ${selectedSkill.color} overflow-hidden`}
-              >
+              {/* Mobile Optimized Modal Header */}
+              <div className={`relative p-4 sm:p-6 lg:p-8 bg-gradient-to-br ${selectedSkill.color} overflow-hidden`}>
                 {/* Animated background pattern */}
                 <div className="absolute inset-0 opacity-20">
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20"
-                    animate={{ x: ["-100%", "100%"] }}
-                    transition={{ 
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 animate-slideRight" />
                 </div>
                 
                 <div className="relative z-10 flex items-center justify-between">
-                  <div className="flex items-center space-x-6">
-                    <motion.div 
-                      className="w-24 h-24 rounded-3xl bg-white/25 backdrop-blur-sm flex items-center justify-center shadow-2xl border border-white/30"
-                      animate={{ 
-                        scale: [1, 1.05, 1],
-                      }}
-                      transition={{ 
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    >
-                      <span className="text-5xl drop-shadow-lg">{selectedSkill.icon}</span>
-                    </motion.div>
-                    <div>
-                      <motion.h3 
-                        className="text-4xl font-bold text-white drop-shadow-lg mb-2"
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                      >
+                  <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-6 flex-1 min-w-0">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-24 lg:h-24 rounded-2xl lg:rounded-3xl bg-white/25 backdrop-blur-sm flex items-center justify-center shadow-2xl border border-white/30 animate-pulse flex-shrink-0">
+                      <span className="text-xl sm:text-3xl lg:text-5xl drop-shadow-lg">{selectedSkill.icon}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-2xl lg:text-4xl font-bold text-white drop-shadow-lg mb-1 lg:mb-2 line-clamp-2">
                         {selectedSkill.name}
-                      </motion.h3>
-                      <motion.div 
-                        className="w-20 h-1.5 bg-white/60 rounded-full"
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ delay: 0.4, duration: 0.8 }}
-                      />
+                      </h3>
+                      <div className="w-12 sm:w-16 lg:w-20 h-1 lg:h-1.5 bg-white/60 rounded-full" />
                     </div>
                   </div>
                   
-                  {/* Enhanced close button */}
-                  <motion.button
+                  {/* Mobile Optimized close button */}
+                  <button
                     onClick={closeModal}
-                    className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/30 transition-all duration-300 shadow-xl border border-white/20"
-                    whileHover={{ 
-                      scale: 1.1,
-                      rotate: 90,
-                      transition: { duration: 0.3 }
-                    }}
-                    whileTap={{ scale: 0.9 }}
+                    className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/30 transition-all duration-300 shadow-xl border border-white/20 hover:scale-110 hover:rotate-90 flex-shrink-0"
                     aria-label="Close skill description"
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                  </motion.button>
+                  </button>
                 </div>
               </div>
 
-              {/* Enhanced Modal Content */}
-              <div className="p-8 max-h-[60vh] overflow-y-auto">
-                {/* Summary Section */}
-                <motion.div 
-                  className="mb-8 p-6 bg-gradient-to-r from-gray-50/80 to-gray-100/60 backdrop-blur-sm rounded-2xl border border-gray-200/50"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                    <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${selectedSkill.color} mr-3 shadow-md flex items-center justify-center`}>
-                      <span className="text-sm text-white font-bold">📋</span>
-                    </div>
-                    Overview
-                  </h4>
-                  <p className="text-gray-700 leading-relaxed text-lg">
-                    {selectedSkill.summary}
-                  </p>
-                </motion.div>
-
-                {/* Sections */}
-                <div className="space-y-6">
-                  {selectedSkill.sections?.map((section, index) => {
-                    const sectionTiltRef = { current: sectionRefs.current[index] };
-                    return (
-                      <motion.div
-                        key={index}
-                        ref={el => sectionRefs.current[index] = el}
-                        className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-100/60 hover:border-purple-200/60 transition-all duration-300 shadow-sm hover:shadow-lg"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 + 0.4 }}
-                        onMouseMove={(e) => handleTiltChange(sectionTiltRef, e)}
-                        onMouseLeave={() => resetTilt(sectionTiltRef)}
-                      >
-                        {/* Section Header */}
-                        <div className="flex items-center space-x-4 mb-4">
-                          <motion.div 
-                            className={`w-10 h-10 rounded-xl bg-gradient-to-br ${selectedSkill.color} flex items-center justify-center shadow-lg`}
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <span className="text-sm font-bold text-white">
-                              {index + 1}
-                            </span>
-                          </motion.div>
-                          <div>
-                            <h4 className="text-xl font-bold text-gray-900 mb-1">
-                              {section.title}
-                            </h4>
-                            <div className={`w-12 h-0.5 bg-gradient-to-r ${selectedSkill.color} rounded-full`} />
-                          </div>
+              {/* Mobile Optimized Modal Content */}
+              <div className="p-4 sm:p-6 lg:p-8 max-h-[70vh] lg:max-h-[60vh] overflow-y-auto modal-content-fade">
+                {/* Debug: Ensure selectedSkill exists */}
+                {selectedSkill && (
+                  <>
+                    {/* Mobile Optimized Summary Section */}
+                    <div 
+                      className="mb-6 lg:mb-8 p-4 sm:p-5 lg:p-6 bg-gradient-to-r from-gray-50/80 to-gray-100/60 backdrop-blur-sm rounded-xl lg:rounded-2xl border border-gray-200/50"
+                      style={{ animationDelay: '0.1s' }}
+                    >
+                      <h4 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4 flex items-center">
+                        <div className={`w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 rounded-lg lg:rounded-xl bg-gradient-to-br ${selectedSkill.color} mr-2 lg:mr-3 shadow-md flex items-center justify-center flex-shrink-0`}>
+                          <span className="text-xs sm:text-sm text-white font-bold">📋</span>
                         </div>
-                        
-                        {/* Section Description */}
-                        <p className="text-gray-700 leading-relaxed text-base pl-14">
-                          {section.description}
-                        </p>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-                
-                {/* Footer */}
-                <motion.div 
-                  className="mt-8 pt-6 border-t border-gray-200/60 text-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
-                >
-                  <p className="text-gray-500 text-sm italic">
-                    Click outside or press ESC to close
-                  </p>
-                </motion.div>
+                        Overview
+                      </h4>
+                      <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+                        {selectedSkill.summary || "No summary available"}
+                      </p>
+                    </div>
+
+                    {/* Mobile Optimized Sections */}
+                    <div className="space-y-4 lg:space-y-6">
+                      {selectedSkill.sections && selectedSkill.sections.length > 0 ? (
+                        selectedSkill.sections.map((section, index) => (
+                            <div
+                              key={index}
+                              ref={el => sectionRefs.current[index] = el}
+                              className="bg-white/90 backdrop-blur-sm rounded-xl lg:rounded-2xl p-4 sm:p-5 lg:p-6 border border-gray-100/60 hover:border-purple-200/60 transition-all duration-300 shadow-sm hover:shadow-lg modal-content-fade"
+                              style={{ animationDelay: `${0.2 + index * 0.1}s` }}
+                            >
+                              {/* Mobile Optimized Section Header */}
+                              <div className="flex items-center space-x-3 lg:space-x-4 mb-3 lg:mb-4">
+                                <div 
+                                  className={`w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-lg lg:rounded-xl bg-gradient-to-br ${selectedSkill.color} flex items-center justify-center shadow-lg hover:scale-110 hover:rotate-6 transition-all duration-300 flex-shrink-0`}
+                                >
+                                  <span className="text-xs sm:text-sm font-bold text-white">
+                                    {index + 1}
+                                  </span>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h4 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1 line-clamp-2">
+                                    {section.title || `Section ${index + 1}`}
+                                  </h4>
+                                  <div className={`w-8 sm:w-10 lg:w-12 h-0.5 bg-gradient-to-r ${selectedSkill.color} rounded-full`} />
+                                </div>
+                              </div>
+                              
+                              {/* Mobile Optimized Section Description */}
+                              <p className="text-sm sm:text-base text-gray-700 leading-relaxed pl-11 sm:pl-12 lg:pl-14">
+                                {section.description || "No description available"}
+                              </p>
+                            </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-6 lg:py-8">
+                          <p className="text-sm sm:text-base text-gray-500">No detailed sections available for this skill.</p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Mobile Optimized Footer */}
+                    <div 
+                      className="mt-6 lg:mt-8 pt-4 lg:pt-6 border-t border-gray-200/60 text-center"
+                    >
+                      <p className="text-xs sm:text-sm text-gray-500 italic">
+                        Click outside or press ESC to close
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
       </div>
     </section>
