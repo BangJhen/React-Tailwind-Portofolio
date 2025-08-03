@@ -5,14 +5,27 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
 
-  // Handle scroll effect and active section detection with throttling
+  // Handle scroll effect and active section detection with smoother throttling
   useEffect(() => {
     let ticking = false
+    let lastScrollY = 0
     
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 20)
+          const currentScrollY = window.scrollY
+          
+          // Add hysteresis to prevent flickering at the threshold
+          const threshold = isScrolled ? 15 : 25 // Different thresholds for up/down
+          
+          if (Math.abs(currentScrollY - lastScrollY) > 5) { // Only update if significant scroll
+            if (currentScrollY > threshold && !isScrolled) {
+              setIsScrolled(true)
+            } else if (currentScrollY <= threshold && isScrolled) {
+              setIsScrolled(false)
+            }
+            lastScrollY = currentScrollY
+          }
           
           // Section detection for active navigation
           const sections = ['home', 'about', 'work', 'contact']
@@ -40,7 +53,7 @@ const Header = () => {
     handleScroll() // Check initial state
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isScrolled]) // Add isScrolled as dependency
 
   // Memoize scroll function to prevent recreation
   const scrollToSection = useMemo(() => (sectionId, event) => {
@@ -89,35 +102,59 @@ const Header = () => {
 
   return (
     <nav 
-      className={`fixed w-full z-50 header-slide-down ${
-        isScrolled ? 'top-4' : 'top-0'
-      }`}
+      className="fixed w-full z-50 header-slide-down"
       style={{ 
         left: 0, 
         right: 0,
         top: isScrolled ? '16px' : '0px',
-        transition: 'top 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+        transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        transform: isScrolled ? 'translateY(0)' : 'translateY(0)',
       }}
       data-aos="fade-down"
       data-aos-duration="600"
     >
-      <div className={`transition-all duration-500 ease-out ${
-        isScrolled ? 'w-full flex justify-center px-4 sm:px-6 lg:px-8' : 'w-full px-0'
-      }`}>
-        {/* Header Container - Floating when scrolled, attached when at top */}
+      <div 
+        className="w-full transition-all duration-700 ease-out"
+        style={{
+          display: 'flex',
+          justifyContent: isScrolled ? 'center' : 'stretch',
+          paddingLeft: isScrolled ? '16px' : '0px',
+          paddingRight: isScrolled ? '16px' : '0px',
+          transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        }}
+      >
+        {/* Header Container - Smooth floating transition */}
         <div 
-          className={`floating-header relative ${isScrolled ? 'is-floating' : ''}`}
+          className="floating-header relative w-full"
+          style={{
+            maxWidth: isScrolled ? '1200px' : '100%',
+            backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 1)',
+            backdropFilter: isScrolled ? 'blur(20px)' : 'blur(0px)',
+            borderRadius: isScrolled ? '24px' : '0px',
+            boxShadow: isScrolled 
+              ? '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' 
+              : '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+            border: isScrolled ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid transparent',
+            transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            transform: isScrolled ? 'scale(0.98)' : 'scale(1)',
+          }}
         >
           <div 
-            className="flex items-center"
+            className="flex items-center w-full"
             style={{
-              height: isScrolled ? '48px' : '48px',
-              transition: 'height 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+              height: '64px',
+              padding: isScrolled ? '8px 16px' : '12px 0px',
+              transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
             }}
           >
-          {/* Logo with Profile - Positioned more towards center but still left */}
+          {/* Logo with Profile - Smooth scaling transition */}
           <div 
-            className={`flex items-center space-x-2 group cursor-pointer ml-4 md:ml-6 lg:ml-8 logo-container ${isScrolled ? 'is-scrolled' : ''}`}
+            className="flex items-center space-x-2 group cursor-pointer logo-container"
+            style={{
+              marginLeft: isScrolled ? '8px' : '16px',
+              transform: isScrolled ? 'scale(0.95)' : 'scale(1)',
+              transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             data-aos="fade-right"
             data-aos-delay="200"
@@ -207,15 +244,27 @@ const Header = () => {
             </div>
           </div>
           
-          {/* Desktop Menu - Navigation Pills positioned to the right */}
+          {/* Desktop Menu - Smooth scaling navigation */}
           <div 
-            className={`hidden md:flex flex-1 justify-end mr-4 md:mr-6 lg:mr-8 nav-pills-container ${isScrolled ? 'is-scrolled' : ''}`}
+            className="hidden md:flex flex-1 justify-end nav-pills-container"
+            style={{
+              marginRight: isScrolled ? '8px' : '16px',
+              transform: isScrolled ? 'scale(0.95)' : 'scale(1)',
+              transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }}
             data-aos="fade-left"
             data-aos-delay="300"
           >
             {/* ...existing desktop navigation code... */}
             <div 
-              className="nav-pills-container flex items-center space-x-0.5 sm:space-x-1 rounded-full px-2 sm:px-3 py-1 sm:py-1.5"
+              className="nav-pills-container flex items-center space-x-1 sm:space-x-2 rounded-full px-3 sm:px-4 py-2 sm:py-2.5"
+              style={{
+                backgroundColor: 'transparent',
+                backdropFilter: 'blur(0px)',
+                transition: 'all 0.4s ease-out',
+                border: 'none',
+                boxShadow: 'none'
+              }}
             >
               {navItems.map((item, index) => (
                 <div
@@ -228,29 +277,41 @@ const Header = () => {
                   <a
                     href={item.href}
                     onClick={(e) => scrollToSection(item.id, e)}
-                    className={`relative px-2 sm:px-3 py-1.5 sm:py-2 rounded-full font-medium transition-all duration-300 flex items-center space-x-1 sm:space-x-2 group text-xs sm:text-sm min-w-max ${
+                    className={`relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2 sm:space-x-2.5 group text-sm sm:text-base min-w-max ${
                       activeSection === item.id 
-                        ? 'bg-gray-200/40 backdrop-blur-md text-gray-800 shadow-lg' 
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-white/60 hover:backdrop-blur-sm'
+                        ? 'bg-white/95 backdrop-blur-md text-gray-900 shadow-xl ring-2 ring-blue-200/50' 
+                        : 'text-gray-700 hover:text-gray-900 hover:bg-white/80 hover:backdrop-blur-sm hover:shadow-lg hover:ring-1 hover:ring-white/30'
                     }`}
+                    style={{
+                      minHeight: '44px',
+                      fontSize: activeSection === item.id ? '14px' : '13px',
+                      fontWeight: activeSection === item.id ? '600' : '500',
+                      transform: activeSection === item.id ? 'scale(1.05)' : 'scale(1)',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
                   >
-                    <span className="text-xs sm:text-sm mr-1.5">
+                    <span className="text-base sm:text-lg mr-2">
                       {item.icon}
                     </span>
                     <span 
-                      className="font-medium" 
+                      className="font-semibold tracking-wide" 
                       style={{
-                        color: activeSection === item.id ? '#1f2937' : '#374151',
-                        fontSize: '12px'
+                        color: 'inherit',
+                        fontSize: 'inherit',
+                        letterSpacing: '0.025em'
                       }}
                     >
                       {item.name}
                     </span>
                     
-                    {/* Active Section Indicator */}
+                    {/* Active Section Indicator - Enhanced */}
                     {activeSection === item.id && (
                       <div
-                        className="absolute -top-1 -right-1 w-2 h-2 bg-blue-400 rounded-full shadow-sm active-indicator"
+                        className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-lg active-indicator"
+                        style={{
+                          animation: 'pulse 2s infinite',
+                          boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.3)'
+                        }}
                       />
                     )}
                   </a>
@@ -259,9 +320,14 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Mobile menu button - Positioned on the right side */}
+          {/* Mobile menu button - Smooth positioning */}
           <div 
-            className="md:hidden flex-1 flex justify-end mr-4"
+            className="md:hidden flex-1 flex justify-end"
+            style={{
+              marginRight: isScrolled ? '8px' : '16px',
+              transform: isScrolled ? 'scale(0.95)' : 'scale(1)',
+              transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }}
             data-aos="fade-in"
             data-aos-delay="500"
           >
@@ -295,15 +361,15 @@ const Header = () => {
           data-aos="zoom-in"
           data-aos-duration="300"
         >
-            <div className="px-4 sm:px-6 pt-3 sm:pt-4 pb-4 sm:pb-6 space-y-1 sm:space-y-2">
+            <div className="px-6 sm:px-8 pt-4 sm:pt-5 pb-5 sm:pb-7 space-y-2 sm:space-y-3">
               {navItems.map((item) => (
                 <a 
                   key={item.name}
                   href={item.href} 
-                  className={`mobile-nav-item group flex items-center space-x-3 sm:space-x-4 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-medium transition-all duration-200 cursor-pointer touch-manipulation ${
+                  className={`mobile-nav-item group flex items-center space-x-4 sm:space-x-5 px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-semibold transition-all duration-200 cursor-pointer touch-manipulation ${
                     activeSection === item.id
-                      ? 'bg-gray-200/40 backdrop-blur-md text-gray-800 shadow-md'
-                      : 'text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 active:bg-gray-200'
+                      ? 'bg-white/95 backdrop-blur-md text-gray-900 shadow-xl ring-2 ring-blue-200/50'
+                      : 'text-gray-700 hover:bg-white/60 hover:text-gray-900 active:bg-white/80 hover:shadow-lg hover:ring-1 hover:ring-white/30'
                   }`}
                   onClick={(e) => {
                     e.preventDefault()
@@ -332,25 +398,38 @@ const Header = () => {
                     display: 'flex',
                     alignItems: 'center',
                     textDecoration: 'none',
-                    color: activeSection === item.id ? '#1f2937' : '#374151',
-                    minHeight: '48px' // Ensure minimum touch target size
+                    color: activeSection === item.id ? '#111827' : '#374151',
+                    minHeight: '56px', // Larger touch target
+                    fontSize: activeSection === item.id ? '16px' : '15px',
+                    fontWeight: activeSection === item.id ? '600' : '500',
+                    transform: activeSection === item.id ? 'scale(1.02)' : 'scale(1)',
+                    transition: 'all 0.2s ease-out'
                   }}
                 >
-                  <span className="text-lg sm:text-xl">
+                  <span className="text-xl sm:text-2xl">
                     {item.icon}
                   </span>
-                  <span className="flex-1 text-sm sm:text-base" style={{color: 'inherit'}}>{item.name}</span>
+                  <span className="flex-1 text-base sm:text-lg font-semibold tracking-wide" style={{color: 'inherit'}}>{item.name}</span>
                   <div 
-                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
                       activeSection === item.id 
-                        ? 'bg-blue-400 scale-100 opacity-100' 
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 scale-100 opacity-100 shadow-lg' 
                         : 'bg-gray-400 scale-0 opacity-0'
                     }`}
+                    style={{
+                      boxShadow: activeSection === item.id ? '0 0 0 2px rgba(59, 130, 246, 0.3)' : 'none'
+                    }}
                   />
                   
-                  {/* Active checkpoint indicator for mobile */}
+                  {/* Active checkpoint indicator for mobile - Enhanced */}
                   {activeSection === item.id && (
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-400 rounded-full" />
+                    <div 
+                      className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-lg" 
+                      style={{
+                        animation: 'pulse 2s infinite',
+                        boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.3)'
+                      }}
+                    />
                   )}
                 </a>
               ))}

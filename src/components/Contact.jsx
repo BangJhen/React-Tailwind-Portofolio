@@ -159,7 +159,7 @@ const Contact = () => {
             data-aos-duration="700"
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 lg:mb-4"
           >
-            Let's Build Something Great Together
+            Let's Work Together
           </h2>
           <div 
             data-aos="fade-up" 

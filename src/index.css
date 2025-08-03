@@ -27,6 +27,109 @@ html {
   backdrop-filter: blur(4px);
 }
 
+/* Navigation Enhancement Styles - Updated from our improvements */
+.nav-pills-container .nav-item a {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-pills-container .nav-item a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-pills-container .nav-item a:hover::before {
+  left: 100%;
+}
+
+/* Active indicator pulse animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+/* Touch feedback for mobile */
+.mobile-nav-item.touch-active {
+  transform: scale(0.98) !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Clean navigation pills without background */
+.nav-pills-container {
+  position: relative;
+}
+
+/* Header Smooth Transition Styles - Enhanced */
+.floating-header {
+  will-change: transform, background-color, box-shadow, border-radius;
+  contain: layout style paint;
+}
+
+/* Smooth header animation classes */
+.header-slide-down {
+  will-change: transform, top;
+  contain: layout;
+}
+
+/* Logo smooth scaling */
+.logo-container {
+  will-change: transform;
+  contain: layout;
+}
+
+/* Navigation pills smooth transitions */
+.nav-pills-container {
+  will-change: background-color, transform;
+  contain: layout style;
+}
+
+/* Mobile menu smooth positioning */
+.mobile-menu-floating {
+  animation: mobile-menu-appear 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes mobile-menu-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .floating-header,
+  .header-slide-down,
+  .logo-container,
+  .nav-pills-container {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Enhanced backdrop blur support */
+@supports (backdrop-filter: blur(20px)) {
+  .floating-header {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
 /* Header Navigation Button Hover Animations */
 .nav-pills-container a {
   position: relative;
